@@ -1,11 +1,11 @@
 import Config
 
 # Configure your database
-config :gotham, TimeManager.Repo,
+config :gothapp, Tman.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
-  database: "gotham_dev",
+  database: "gothapp_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
@@ -16,17 +16,17 @@ config :gotham, TimeManager.Repo,
 # The watchers configuration can be used to run external
 # watchers to your application. For example, we can use it
 # to bundle .js and .css sources.
-config :gotham, TimeManagerWeb.Endpoint,
+config :gothapp, TmanWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
   http: [ip: {127, 0, 0, 1}, port: 4000],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "S6QyQuwrTGDZc/G8M07Zj1Ik+dAbEj7GLE2FTRlZekUt6gNvSlFxyua1B582F4Oe",
+  secret_key_base: "/I69w0QyDQCd/Gz7TB8nAZkRpJscdqt74mbvnE92yZEEu5zOhvpNIlAoH+07jW2u",
   watchers: [
-    esbuild: {Esbuild, :install_and_run, [:gotham, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:gotham, ~w(--watch)]}
+    esbuild: {Esbuild, :install_and_run, [:gothapp, ~w(--sourcemap=inline --watch)]},
+    tailwind: {Tailwind, :install_and_run, [:gothapp, ~w(--watch)]}
   ]
 
 # ## SSL Support
@@ -53,7 +53,7 @@ config :gotham, TimeManagerWeb.Endpoint,
 # different ports.
 
 # Enable dev routes for dashboard and mailbox
-config :gotham, dev_routes: true
+config :gothapp, dev_routes: true
 
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"

@@ -1,9 +1,9 @@
-defmodule TimeManager.MixProject do
+defmodule Tman.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :gotham,
+      app: :gothapp,
       version: "0.1.0",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -18,7 +18,7 @@ defmodule TimeManager.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {TimeManager.Application, []},
+      mod: {Tman.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end
@@ -70,10 +70,10 @@ defmodule TimeManager.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind gotham", "esbuild gotham"],
+      "assets.build": ["tailwind gothapp", "esbuild gothapp"],
       "assets.deploy": [
-        "tailwind gotham --minify",
-        "esbuild gotham --minify",
+        "tailwind gothapp --minify",
+        "esbuild gothapp --minify",
         "phx.digest"
       ]
     ]
