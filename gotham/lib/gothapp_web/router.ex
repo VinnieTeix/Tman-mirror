@@ -7,6 +7,17 @@ defmodule TmanWeb.Router do
 
   scope "/api", TmanWeb do
     pipe_through :api
+    resources "/users", UserController, only: [:index, :show, :create, :update, :delete]
+
+    get "/workingtime/:userID", WorkingtimeController, :index
+    get "/workingtime/:userID/:id", WorkingtimeController, :show
+    post "/workingtime/:userID", WorkingtimeController, :create
+    put "/workingtime/:id", WorkingtimeController, :update
+    delete "/workingtime/:id", WorkingtimeController, :delete
+
+    get "/clocks/:userID", ClockController, :index
+    post "/clocks/:userID", ClockController, :create
+
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
