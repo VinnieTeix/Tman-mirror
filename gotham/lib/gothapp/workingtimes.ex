@@ -21,6 +21,22 @@ defmodule Tman.Workingtimes do
     Repo.all(Workingtime)
   end
 
+  def list_workingtimes_by_params(startTime, endTime, userID) do
+    cond do
+      startTime && endTime ->
+        Repo.all(from(w in Workingtime, where: w.start == ^startTime and w.end == ^endTime and w.user == ^userID))
+
+      startTime ->
+        Repo.all(from(w in Workingtime, where: w.start == ^startTime and w.user == ^userID))
+
+      endTime ->
+        Repo.all(from(w in Workingtime, where: w.end == ^endTime and w.user == ^userID))
+
+      true ->
+         Repo.all(from(w in Workingtime, where: w.user == ^userID))
+    end
+  end
+
   @doc """
   Gets a single workingtime.
 

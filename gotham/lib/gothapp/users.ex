@@ -21,6 +21,22 @@ defmodule Tman.Users do
     Repo.all(User)
   end
 
+  def list_users_by_params(username, email) do
+    cond do
+      username && email ->
+        Repo.all(from(u in User, where: u.username == ^username and u.email == ^email))
+
+      username ->
+        Repo.all(from(u in User, where: u.username == ^username))
+
+      email ->
+        Repo.all(from(u in User, where: u.email == ^email))
+
+      true ->
+        Repo.all(User)
+    end
+  end
+
   @doc """
   Gets a single user.
 

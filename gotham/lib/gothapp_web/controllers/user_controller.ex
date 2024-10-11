@@ -4,10 +4,14 @@ defmodule TmanWeb.UserController do
   alias Tman.Users
   alias Tman.Users.User
 
-  action_fallback TmanWeb.FallbackController
+  action_fallback(TmanWeb.FallbackController)
 
-  def index(conn, _params) do
-    users = Users.list_users()
+  def index(conn, params) do
+    username = Map.get(params, "username")
+    email = Map.get(params, "email")
+    
+    users = Users.list_users_by_params(username, email)
+
     render(conn, :index, users: users)
   end
 
