@@ -1,12 +1,16 @@
-Gotham Time Manager project
+# Gotham Time Manager project
 
-Contains the following Phoenix framework generated elements:
+## Contains the following Phoenix framework generated elements:
+-------------------------------------------------------------
+### Part 1 :
+    - Elixir, Phoenix
     - Schemas
     - Controllers
     - Contexts
-    - Cors allow origin
 -------------------------------------------------------------
-Part 2 :
+### Part 2 :
+   - VueJs
+   - Cors allow origin
    - Installation vuejs
-   - Connexion API front (vue)
+   - Connexion API back to front
    - Route : (/(home) , /users, /workingtimes, /clocks)
