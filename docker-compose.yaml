@@ -1,0 +1,55 @@
+services:
+  frontend:
+    build:
+      context: ./Batman
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./gotham
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      # - DATABASE_URL=postgres://postgres:password@db/batcave
+      PGUSER: postgres
+      PGPASSWORD: password
+      PGDATABASE: batcave
+      PGPORT: 5432
+      PGHOST: db
+    depends_on:
+      - db
+    restart: on-failure
+
+  db:
+    image: postgres:13
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: batcave
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    depends_on:
+      - db
+
+volumes:
+  db_data:
+
+networks:
+  services-network:
+    name: services-network
+    driver: bridge

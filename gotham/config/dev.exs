@@ -2,9 +2,9 @@ import Config
 
 # Configure your database
 config :gothapp, Tman.Repo,
-  username: "rouni",
-  password: "4224",
-  hostname: "localhost",
+  username: "postgres",
+  password: "password",
+  # hostname: "db",
   database: "batcave",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
