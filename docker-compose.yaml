@@ -5,6 +5,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
+    networks:
+      - services-network
     depends_on:
       - backend
 
@@ -15,7 +17,6 @@ services:
     ports:
       - "4000:4000"
     environment:
-      # - DATABASE_URL=postgres://postgres:password@db:5432/batcave
       PGUSER: postgres
       PGPASSWORD: password
       PGDATABASE: batcave
@@ -23,16 +24,17 @@ services:
       PGHOST: db
     depends_on:
       - db
-    restart: on-failure
 
   db:
     image: postgres:13
-    ports:
-      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
       POSTGRES_DB: batcave
+      PGDATA: /var/lib/postgresql/data/pgdata
+    restart: always
+    ports:
+      - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
 
@@ -48,3 +50,8 @@ services:
 
 volumes:
   db_data:
+
+networks:
+  services-network:
+    name: services-network
+    driver: bridge
