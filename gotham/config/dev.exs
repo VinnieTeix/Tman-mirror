@@ -2,10 +2,10 @@ import Config
 
 # Configure your database
 config :gothapp, Tman.Repo,
-  username: "postgres",
-  password: "postgres",
-  hostname: "localhost",
-  database: "gothapp_dev",
+  username: System.get_env("$PGUSER"),
+  password: System.get_env("PGPASSWORD"),
+  hostname: System.get_env("PGHOST"),
+  database: "postgres",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10

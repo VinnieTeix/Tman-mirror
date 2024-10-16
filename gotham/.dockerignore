@@ -1,0 +1,5 @@
+/_build
+/rel
+/test
+/erl_crash.dump
+/bundle.sh
