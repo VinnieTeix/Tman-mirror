@@ -45,6 +45,7 @@ mix phx.new boot --app strap --module Todolist --no-html
     $ mix phx.server
 
  mix deps.get
+ mix ecto.drop
 mix ecto.migrate
 
 mix phx.server

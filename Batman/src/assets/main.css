@@ -3,36 +3,38 @@
 @tailwind components;
 @tailwind utilities;
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+:root {
+  --bg-color: #f8f9fa;
+  --text-color: #212529;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+.dark :root {
+  --bg-color: #333;
+  --text-color: #eee;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+/* Ajout de styles pour la barre de navigation */
+.v-application {
+  background-color: var(--color-background);
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+/* Styles pour les boutons dans la barre de navigation */
+.v-btn {
+  margin-left: 10px;
+  transition: background-color 0.3s ease;
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+/* Couleur du bouton au survol */
+.v-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1); /* Change la couleur selon tes préférences */
+}
+
+/* Alignement de l'image logo */
+.logo {
+  height: 50px; /* Ajuste la taille selon tes besoins */
+  cursor: pointer; /* Indique que l'image est cliquable */
 }
