@@ -16,4 +16,6 @@ RUN mix local.hex --force &&\
 
 RUN mix deps.get
 
-CMD ["./entrypoint.sh"]
+EXPOSE 4000
+
+CMD ["bash","entrypoint.sh"]

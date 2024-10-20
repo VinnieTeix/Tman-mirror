@@ -20,6 +20,32 @@ if System.get_env("PHX_SERVER") do
   config :gothapp, TmanWeb.Endpoint, server: true
 end
 
+username =
+  System.get_env("PGUSER") ||
+    raise """
+    environment variable PGUSER is missing.
+    """
+
+password =
+  System.get_env("PGPASSWORD") ||
+    raise """
+    environment variable PGPASSWORD is missing.
+    """
+
+port =
+  System.get_env("PGPORT") ||
+    raise """
+    environment variable PGPORT is missing.
+    """
+
+database =
+  System.get_env("PGDATABASE") ||
+    raise """
+    environment variable PGDATABASE is missing.
+    """
+
+host = "PGHOST"
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||
@@ -47,10 +73,6 @@ if config_env() == :prod do
       environment variable SECRET_KEY_BASE is missing.
       You can generate one by calling: mix phx.gen.secret
       """
-
-  host = System.get_env("PHX_HOST") || "example.com"
-  port = String.to_integer(System.get_env("PORT") || "4000")
-
   config :gothapp, :dns_cluster_query, System.get_env("DNS_CLUSTER_QUERY")
 
   config :gothapp, TmanWeb.Endpoint,

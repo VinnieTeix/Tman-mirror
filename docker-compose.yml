@@ -1,9 +1,11 @@
 services:
-  web:
+  phoenix:
     build:
       context: ./gotham
+    networks:
+      - application
     ports:
-      - "4000:4000"
+      - "4001:4000"
     volumes:
       - .:/gotham
     depends_on:
@@ -18,9 +20,25 @@ services:
       PGDATABASE: ${PGDATABASE}
       PGPORT: ${PGPORT}
     restart: always
+    networks:
+      - application
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
+  vue:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - "5174:5173"
+    depends_on:
+      - phoenix
+    networks:
+      - application
 volumes:
   pgdata:
+
+networks:
+  application:
+    driver: bridge

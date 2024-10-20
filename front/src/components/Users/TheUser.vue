@@ -8,7 +8,7 @@ export default {
     },
     methods: {
         async getUsers() {
-            const response = await axios.get("http://localhost:4000/api/users")
+            const response = await axios.get("http://phoenix:4000/api/users")
                 .then(response => response.data)
                 .catch(error => {
                     console.log(error)

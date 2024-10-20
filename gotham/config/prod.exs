@@ -7,7 +7,6 @@ import Config
 # before starting your production server.
 config :gothapp, TmanWeb.Endpoint,
        server: true,
-       cache_static_manifest: "priv/static/cache_manifest.json",
        show_sensitive_data_on_connection_error: true,
        username: System.get_env("PGUSER"),
        password: System.get_env("PGPASSWORD"),
