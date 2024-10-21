@@ -14,6 +14,7 @@ config :gothapp,
 
 # Configures the endpoint
 config :gothapp, TmanWeb.Endpoint,
+  http: [ip: {0, 0, 0, 0}, port: 4000],
   url: [host: "localhost"],
   adapter: Bandit.PhoenixAdapter,
   render_errors: [

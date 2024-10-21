@@ -19,4 +19,3 @@ if [[ -z `psql -Atqc "\\list $PGDATABASE"` ]]; then
 fi
 
 exec mix phx.server
-'+

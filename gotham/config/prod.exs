@@ -6,13 +6,25 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :gothapp, TmanWeb.Endpoint,
+       http: [ip: {0, 0, 0, 0}, port: 4000],
+       url: [host: "localhost", port: 4000],
        server: true,
-       cache_static_manifest: "priv/static/cache_manifest.json",
        show_sensitive_data_on_connection_error: true,
-       username: System.get_env("PGUSER"),
-       password: System.get_env("PGPASSWORD"),
-       database: System.get_env("PGDATABASE"),
-       hostname: System.get_env("PGHOST")
+       cors_plug: [
+        origin: "*",
+         methods: ["GET", "PATCH", "POST", "DELETE", "OPTIONS"]
+       ]
+
+config :gothapp, Tman.Repo,
+        username: System.get_env("PGUSER"),
+        password: System.get_env("PGPASSWORD"),
+        database: System.get_env("PGDATABASE"),
+        hostname: System.get_env("PGHOST")
+#
+config :cors_plug,
+       origin: "*",
+       max_age: 86400,
+       methods: ["GET", "PATCH", "POST", "DELETE", "OPTIONS"]
 
 # Configures Swoosh API Client
 config :swoosh, api_client: Swoosh.ApiClient.Finch, finch_name: Tman.Finch
