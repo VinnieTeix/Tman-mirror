@@ -1,5 +1,6 @@
 <script>
 import TheNavigation from './components/nav/TheNavigation.vue';
+import axios from 'axios';
 export default {
   components: {
     TheNavigation
@@ -15,7 +16,7 @@ export default {
         postUser() {
             axios.post("http://localhost:4000/api/users", {
                 user: { username: this.username,
-                email: this.email 
+                email: this.email
                 }
             }).catch(error => {
                     console.log(error)
@@ -39,7 +40,7 @@ export default {
             <button @click="postUser">Add User</button>
         </form>
         <ul>
-          
+
         </ul>
     </div>
   </main>
