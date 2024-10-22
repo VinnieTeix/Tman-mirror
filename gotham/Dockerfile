@@ -1,4 +1,4 @@
-FROM elixir:latest
+FR`OM elixir:latest
 
 RUN apt-get update && \
     apt-get install --yes build-essential inotify-tools postgresql-client git dos2unix && \
