@@ -36,8 +36,20 @@ services:
       - phoenix
     networks:
       - application
+  jenkins:
+    image: jenkins/jenkins:lts
+    restart: on-failure
+    privileged: true
+    user: root
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    container_name: jenkins
+    volumes:
+      - jenkins_home:/var/jenkins_home
 volumes:
   pgdata:
+  jenkins_home:
 
 networks:
   application:
