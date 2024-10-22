@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent {dockerfile true}
 
     environment {
         // Define Docker Hub credentials
@@ -9,5 +9,10 @@ pipeline {
     }
 
     stages {
+        stage('Build') {
+            steps {
+
+            }
+        }
     }
 }
