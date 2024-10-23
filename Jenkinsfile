@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // GitHub repository details
-        REPO_URL = 'git@github.com:VinnieTeix/Tman-mirror.git'
+        REPO_URL = 'https://github.com/VinnieTeix/Tman-mirror.git'
         // Docker Compose file location
         DOCKER_COMPOSE_FILE = './docker-compose.yml'
     }
