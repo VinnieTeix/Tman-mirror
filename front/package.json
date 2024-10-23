@@ -14,9 +14,15 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@syncfusion/ej2-vue-grids": "^27.1.55",
+    "@syncfusion/ej2-vue-layouts": "^27.1.53",
     "axios": "^1.7.7",
+    "chart.js": "^4.4.5",
+    "css-doodle": "^0.40.8",
+    "fullcalendar": "^6.1.15",
     "pinia": "^2.2.4",
     "vue": "^3.5.11",
+    "vue-chartjs": "^5.3.1",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
