@@ -1,0 +1,44 @@
+services:
+  phoenix:
+    build:
+      context: ./gotham
+    networks:
+      - application
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/gotham
+    depends_on:
+      - db
+    env_file:
+      - .env
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ${PGUSER}
+      POSTGRES_PASSWORD: ${PGPASSWORD}
+      PGDATABASE: ${PGDATABASE}
+      PGPORT: ${PGPORT}
+    restart: always
+    networks:
+      - application
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+  vue:
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    depends_on:
+      - phoenix
+    networks:
+      - application
+volumes:
+  pgdata:
+
+networks:
+  application:
+    driver: bridge
