@@ -21,14 +21,16 @@ export default {
 </script>
 <template>
     <div>
-        <h1> Users Profile </h1>
-        <button @click="getUsers">Get Users</button>
-        <ul>
-            <li v-for="user in users" :key="user.id">
-                <p> {{ user.username }} </p>
-                <p> {{ user.email }} </p>
-            </li>
-        </ul>
+        Users Profile 
+        <base-card>
+            <button @click="getUsers">Get Users</button>
+            <ul>
+                <li v-for="user in users" :key="user.id">
+                    <p> {{ user.username }} </p>
+                    <p> {{ user.email }} </p>
+                </li>
+            </ul>
+        </base-card>
     </div>
 </template>
 <style scoped>

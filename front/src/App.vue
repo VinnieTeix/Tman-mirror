@@ -1,50 +1,14 @@
-<script>
-import TheNavigation from './components/nav/TheNavigation.vue';
-import axios from 'axios';
-export default {
-  components: {
-    TheNavigation
-  },
-  data() {
-        return {
-            username: '',
-            email: '',
-            users: []
-        }
-    },
-    methods: {
-        postUser() {
-            axios.post("http://localhost:4000/api/users", {
-                user: { username: this.username,
-                email: this.email
-                }
-            }).catch(error => {
-                    console.log(error)
-                })
-                console.log(this.username, this.email)
-            this.username = ''
-            this.email = ''
-        },
+<template>
+  <div id="app">
+    <router-view></router-view>
+  </div>
+</template>
 
-    },
+<script>
+export default {
+  name: 'app'
 }
 </script>
-<template>
-  <the-navigation/>
-  <main>
-    <router-view></router-view>
-    <div>
-        <form @submit.prevent="">
-        <input type="text" id="username" name="username" placeholder="username" v-model.trim="username">
-        <input type="text" id="email" name="email" placeholder="email" v-model.trim="email">
-            <button @click="postUser">Add User</button>
-        </form>
-        <ul>
-
-        </ul>
-    </div>
-  </main>
-</template>
 
 <style>
 * {
@@ -53,9 +17,26 @@ export default {
 
 html {
   font-family: sans-serif;
+  background-color: #222;
+  color: #fff;
 }
 
 body {
   margin: 0;
+}
+
+#app {
+  position: relative;
+  overflow: hidden;
+  height: 100vh;
+}
+
+css-doodle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
 }
 </style>
