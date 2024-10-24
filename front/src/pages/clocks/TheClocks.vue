@@ -7,8 +7,8 @@
         <div class="line">
           <line-chart :line-data="pie" />
         </div>
-        <Button v-if="flag" @click="toggleFlag">Clock In</Button>
-        <Button v-else @click="toggleFlag">Clock Out</Button>
+        <Button v-if="flag" @click="clockIn">Clock In</Button>
+        <Button v-else @click="clockOut">Clock Out</Button>
       </div>
     </div>
   </div>
@@ -17,11 +17,20 @@
 import TheNavigation from '../../components/nav/TheNavigation.vue'
 import LineChart from '../../components/charts/line/LineChart.vue'
 import Button from '../../components/ui/Button.vue'
+import axios from "axios";
+import {useGlobalStore} from '@/store/store.js'
+
 export default {
   components: {
     TheNavigation,
     LineChart,
     Button,
+  },
+  setup() {
+    const store = useGlobalStore();
+    return {
+      userID: store.userID
+    }
   },
   data() {
     return {
@@ -39,7 +48,26 @@ export default {
     }
   },
   methods: {
-    toggleFlag() {
+    clockIn() {
+      axios.post("http://localhost:4000/api/clocks/:userID", {
+        clock: {
+          status: true,
+          time: new Date(),
+          user: this.userID,
+        },
+      })
+      console.log(this.userID)
+      this.flag = !this.flag
+    },
+    clockOut(){
+      axios.post("http://localhost:4000/api/clocks/:userID", {
+        clock: {
+          status: false,
+          time: new Date(),
+          user: this.userID,
+        }
+      })
+      console.log(this.userID)
       this.flag = !this.flag
     },
   },

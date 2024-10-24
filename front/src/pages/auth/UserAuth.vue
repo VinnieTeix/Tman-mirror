@@ -18,6 +18,7 @@
 <script>
 import axios from 'axios';
 import 'css-doodle';
+import {useGlobalStore} from "@/store/store.js";
 
 export default {
   name: 'auth',
@@ -36,15 +37,19 @@ export default {
           })
 
         },
-        
+
     methods: {
       loginUser() {
+        const store = useGlobalStore();
+        const username = this.email.split('@')[0] + this.email.split('@')[1].split('.')[0]
+        store.setUserID(username);
         if (this.users && this.users.some(user => user.email === this.email)) {
           console.log('Email found in users array');
           this.$router.push('/chartmanager');
         } else {
           console.log('Email not found in users array');
         }
+
       }
     }
 }
@@ -107,7 +112,7 @@ input {
 }
 
 .registerButton:hover {
-    
+
   background-color: rgb(122, 89, 206);
   color: #000;
 }

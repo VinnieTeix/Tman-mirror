@@ -21,7 +21,7 @@ export default {
 </script>
 <template>
     <div>
-        Users Profile 
+        Users Profile
         <base-card>
             <button @click="getUsers">Get Users</button>
             <ul>
