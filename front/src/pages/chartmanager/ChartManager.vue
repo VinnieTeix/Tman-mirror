@@ -2,18 +2,14 @@
   <div>
     <the-navigation />
     <div class="chart">
-      <div class="top">
-        <div class="bar">
-          <bar-chart :bar-data="bar" />
-        </div>
-        <div class="pie">
-          <pie-chart :pie-data="pie" />
-        </div>
+      <div class="pie">
+        <pie-chart :pie-data="pie" />
       </div>
-      <div class="bottom">
-        <div class="line">
-          <line-chart :line-data="line" />
-        </div>
+      <div class="line">
+        <line-chart :line-data="line" />
+      </div>
+      <div class="bar">
+        <bar-chart :bar-data="bar" />
       </div>
     </div>
   </div>
@@ -87,26 +83,27 @@ export default {
 </script>
 <style scoped>
 .chart {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column: col 3 / span 2;
+  grid-row: row 2;
+  gap: 20px;
   flex-direction: column-reverse;
-  background: #fff;
-  height: 100%;
-}
-
-.top {
-  display: flex;
-  flex: 1;
 }
 
 .bar {
-  flex: 1;
-  display: flex;
-  align-items: center;
+  grid-column: 1 / 3;
+  grid-row: 2;
 }
 
-.pie,
 .line {
-  flex: 1;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.pie {
+  grid-column: 2;
+  grid-row: 1;
 }
 
 .pie,
@@ -114,26 +111,25 @@ export default {
 .bar {
   padding: 20px;
   border: #000 solid 1px;
+  background-color: #fff;
+  border-radius: 25px;
 }
 
-.bottom {
-  display: flex;
-  flex: 1;
-}
-
-@media screen and (max-width: 600px) {
-  .top {
-    flex-direction: column;
+@media screen and (max-width: 768px) {
+  .chart {
+    grid-template-columns: 1fr;
   }
-  .bar,
-  .pie {
-    margin-bottom: 20px;
+  .bar {
+    grid-column: 1;
+    grid-row: 3;
   }
-  .bar,
-  .pie,
   .line {
-    width: 100%;
-    height: 100%;
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .pie {
+    grid-column: 1;
+    grid-row: 1;
   }
 }
 </style>

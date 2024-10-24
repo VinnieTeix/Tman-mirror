@@ -10,11 +10,7 @@ export default {
   data() {
     return {
       calendarOptions: {
-        plugins: [
-          dayGridPlugin,
-          timeGridPlugin,
-          interactionPlugin,
-        ],
+        plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
         headerToolbar: {
           left: 'prev,next,today',
           center: 'title',
@@ -55,7 +51,7 @@ export default {
     handleEventClick(clickInfo) {
       if (
         confirm(
-          `Are you sure you want to delete the event '${clickInfo.event.title}'`
+          `Are you sure you want to delete the event '${clickInfo.event.title}'`,
         )
       ) {
         clickInfo.event.remove()
@@ -69,8 +65,7 @@ export default {
 </script>
 
 <template>
-  <FullCalendar
-  />
+  <FullCalendar />
 </template>
 
 <style scoped>
@@ -89,14 +84,19 @@ li {
   padding: 0;
 }
 
-b { /* used for event dates/times */
+b {
+  /* used for event dates/times */
   margin-right: 3px;
 }
 
 .demo-app {
   display: flex;
-  min-height: 100%;
-  font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  min-height: 100vh;
+  font-family:
+    Arial,
+    Helvetica Neue,
+    Helvetica,
+    sans-serif;
   font-size: 14px;
 }
 
@@ -116,9 +116,9 @@ b { /* used for event dates/times */
   padding: 3em;
 }
 
-.fc { /* the calendar root */
+.fc {
+  /* the calendar root */
   max-width: 1100px;
   margin: 0 auto;
 }
-
 </style>

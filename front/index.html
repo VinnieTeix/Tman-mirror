@@ -16,7 +16,7 @@
       z-index: 0;
       }
 
-      @size: 100% 150%;
+      @size: 100% 100vh;
       position: absolute;
 
       background: @m(100, (
@@ -32,9 +32,10 @@
       will-change: transform;
       animation: f 50s linear calc(-50s / @size() * @i()) infinite;
       @keyframes f {
-      from { transform: translateY(-100%) }
-      to { transform: translateY(100%) }
+      from { transform: translateY(-20vh) }
+      to { transform: translateY(20vh) }
       }
+
     </css-doodle>
     <script src="https://unpkg.com/css-doodle@0.6.1/css-doodle.min.js"></script>
     <script type="module" src="/src/main.js"></script>

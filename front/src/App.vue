@@ -19,6 +19,9 @@ html {
   font-family: sans-serif;
   background-color: #222;
   color: #fff;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
@@ -37,7 +40,7 @@ css-doodle {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   z-index: -1;
 }
 </style>

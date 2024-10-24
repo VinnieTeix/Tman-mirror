@@ -17,6 +17,7 @@ button {
   position: relative;
   overflow: hidden;
   z-index: 1;
+  cursor: pointer;
 }
 button:after {
   content: '';
