@@ -1,25 +1,24 @@
 <template>
-    <div class="home-container">
-        <base-card>
-            <h1>Welcome to Gotham city</h1>
-            <h4>Working Times</h4>
-            <p>Please log in or register to continue.</p>
-            <div class="auth-buttons">
-                <router-link to="/login">Login</router-link>
-                <router-link to="/register">Register</router-link>
-              </div>
-        </base-card>
-    </div>
-    
+  <div class="home-container">
+    <base-card>
+      <h1>Welcome to Gotham city</h1>
+      <h4>Working Times</h4>
+      <p>Please log in or register to continue.</p>
+      <div class="auth-buttons">
+        <router-link to="/login">Login</router-link>
+        <router-link to="/register">Register</router-link>
+      </div>
+    </base-card>
+  </div>
 </template>
 <script>
 export default {
   name: 'home',
   data() {
     return {
-      clockIn: false
+      clockIn: false,
     }
-  }
+  },
 }
 </script>
 <style>
@@ -37,7 +36,7 @@ body {
 }
 
 h4 {
-  padding: .25px;
+  padding: 0.25px;
 }
 
 .home-container {
@@ -45,12 +44,13 @@ h4 {
 }
 
 .auth-buttons {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
   margin-top: 20px;
 }
 
-.auth-buttons a, button {
+.auth-buttons a,
+button {
   color: white;
   background-color: #aaa;
   padding: 10px 20px;
@@ -58,9 +58,9 @@ h4 {
   transition: background-color 0.3s ease;
 }
 
-.auth-buttons a:hover, button {
+.auth-buttons a:hover,
+button {
   background-color: #aaa;
-
 }
 
 .auth-buttons button {
