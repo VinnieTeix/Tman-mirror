@@ -1,57 +1,58 @@
 <template>
-    <div>
-        <the-navigation/>
-        <div class="container">
-            <h1>Clocks Page</h1> 
-            <div class="column">
-                <line-chart :line-data="data" />
-                <base-card>
-                    <button v-if="flag" @click="toggleFlag">Clock In</button>
-                    <button v-else @click="toggleFlag">Clock Out</button>
-                </base-card>
-            </div>
+  <div>
+    <the-navigation />
+    <div class="container">
+      <h1>Clocks Page</h1>
+      <div class="column">
+        <div class="line">
+          <line-chart :line-data="pie" />
         </div>
+        <Button v-if="flag" @click="toggleFlag">Clock In</Button>
+        <Button v-else @click="toggleFlag">Clock Out</Button>
+      </div>
     </div>
+  </div>
 </template>
 <script>
-
-import TheNavigation from '../../components/nav/TheNavigation.vue';
-import LineChart from '../../components/charts/line/LineChart.vue';
-
+import TheNavigation from '../../components/nav/TheNavigation.vue'
+import LineChart from '../../components/charts/line/LineChart.vue'
+import Button from '../../components/ui/Button.vue'
 export default {
-    components: {
-        TheNavigation,
-        LineChart,
-    },
-    data() {
-        return {
-            flag: true,
-            data: [
-                { name: 'Mon', pl: 7 },
-                { name: 'Tue', pl: 8 },
-                { name: 'Wed', pl: 5 },
-                { name: 'Thu', pl: 9 },
-                { name: 'Fri', pl: 4 },
-                { name: 'Sat', pl: 6 },
-                { name: 'Sun', pl: 7 }
-            ],
-        }
-    },
-    methods: {
-        toggleFlag() {
-            this.flag = !this.flag
-        }
+  components: {
+    TheNavigation,
+    LineChart,
+    Button,
+  },
+  data() {
+    return {
+      flag: true,
+      pie: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [
+          {
+            label: 'Data One',
+            backgroundColor: '#f87979',
+            data: [8, 7, 7, 6, 8, 0, 0],
+          },
+        ],
+      },
     }
+  },
+  methods: {
+    toggleFlag() {
+      this.flag = !this.flag
+    },
+  },
 }
 </script>
 <style scoped>
 h1 {
-    display: flex;
-    align-self: center;
+  display: flex;
+  align-self: center;
 }
 .container {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 .column {
   display: flex;
@@ -60,13 +61,21 @@ h1 {
   margin-top: 20px;
 }
 .chart {
-    background: #fff;
-    color: #000;
-    border-radius: 4%;
+  background: #fff;
+  color: #000;
+  border-radius: 4%;
+}
+.line {
+  background-color: #fff;
+  color: #000;
+  border-radius: 5px;
+  width: 40%;
+  height: 60%;
+  margin-bottom: 5%;
 }
 
 @media screen and (max-width: 600px) {
-    .column {
+  .column {
     width: 100%;
     display: block;
     margin-bottom: 20px;
