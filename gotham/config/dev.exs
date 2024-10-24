@@ -4,7 +4,7 @@ import Config
 config :gothapp, Tman.Repo,
   username: System.get_env("PGUSER"),
   password: System.get_env("PGPASSWORD"),
-  hostname: "db",
+  hostname: "localhost",
   database: "gothapp_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,

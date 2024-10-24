@@ -29,4 +29,3 @@ coverage
 
 *.tsbuildinfo
 /src/store
-/src/pages/auth
