@@ -1,25 +1,26 @@
-defmodule TmanWeb.WorkingtimeJSON do
+defmodule TmanWeb.WorkingTimeJSON do
   alias Tman.Workingtimes.Workingtime
 
   @doc """
   Renders a list of workingtimes.
   """
   def index(%{workingtimes: workingtimes}) do
-    %{data: for(workingtime <- workingtimes, do: data(workingtime))}
+    %{data: for(workingtimes <- workingtimes, do: data(workingtimes))}
   end
 
   @doc """
-  Renders a single workingtime.
+  Renders a single workingtimes.
   """
-  def show(%{workingtime: workingtime}) do
-    %{data: data(workingtime)}
+  def show(%{workingtimes: workingtimes}) do
+    %{data: data(workingtimes)}
   end
 
-  defp data(%Workingtime{} = workingtime) do
+  defp data(%Workingtime{} = workingtimes) do
     %{
-      id: workingtime.id,
-      start: workingtime.start,
-      end: workingtime.end
+      id: workingtimes.id,
+      start: workingtimes.start,
+      end: workingtimes.end,
+      user: workingtimes.user
     }
   end
 end

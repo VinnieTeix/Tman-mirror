@@ -15,11 +15,19 @@ defmodule TmanWeb.UserJSON do
     %{data: data(user)}
   end
 
+  @doc """
+  Renders user and token.
+  """
+  def show_user_and_token(%{user: user, token: token}) do
+    %{user: data(user), token: token}
+  end
+
   defp data(%User{} = user) do
     %{
       id: user.id,
       username: user.username,
-      email: user.email
+      email: user.email,
+      role: user.role
     }
   end
 end

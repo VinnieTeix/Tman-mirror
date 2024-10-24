@@ -21,20 +21,30 @@ defmodule Tman.Workingtimes do
     Repo.all(Workingtime)
   end
 
-  def list_workingtimes_by_params(startTime, endTime, userID) do
-    cond do
-      startTime && endTime ->
-        Repo.all(from(w in Workingtime, where: w.start == ^startTime and w.end == ^endTime and w.user == ^userID))
+  # def list_workingtimes_by_params(startTime, endTime, userID) do
+  #   cond do
+  #     startTime && endTime ->
+  #       Repo.all(from(w in Workingtime, where: w.start == ^startTime and w.end == ^endTime and w.user == ^userID))
 
-      startTime ->
-        Repo.all(from(w in Workingtime, where: w.start == ^startTime and w.user == ^userID))
+  #     startTime ->
+  #       Repo.all(from(w in Workingtime, where: w.start == ^startTime and w.user == ^userID))
 
-      endTime ->
-        Repo.all(from(w in Workingtime, where: w.end == ^endTime and w.user == ^userID))
+  #     endTime ->
+  #       Repo.all(from(w in Workingtime, where: w.end == ^endTime and w.user == ^userID))
 
-      true ->
-         Repo.all(from(w in Workingtime, where: w.user == ^userID))
-    end
+  #     true ->
+  #        Repo.all(from(w in Workingtime, where: w.user == ^userID))
+  #   end
+  # end
+
+  def get_workingtime_by_dates!(startTime, endTime, userID) do
+    query =
+      from(wt in Workingtime,
+        where: wt.start >= ^startTime and wt.start <= ^endTime and wt.user == ^userID,
+        select: wt
+      )
+
+    Repo.all(query)
   end
 
   @doc """
@@ -51,7 +61,11 @@ defmodule Tman.Workingtimes do
       ** (Ecto.NoResultsError)
 
   """
-  def get_workingtime!(id), do: Repo.get!(Workingtime, id)
+  # def get_workingtime!(id), do: Repo.get!(Workingtime, id)
+  def get_workingtime_by_userid_and_id!(user, id),
+    do: Repo.get_by(Working_time, user: user, id: id)
+
+  def get_workingtime_by_id!(id), do: Repo.get_by(Working_time, id: id)
 
   @doc """
   Creates a workingtime.

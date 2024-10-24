@@ -1,4 +1,4 @@
-defmodule TmanWeb.WorkingtimeControllerTest do
+defmodule TmanWeb.WorkingtimesControllerTest do
   use TmanWeb.ConnCase
 
   import Tman.WorkingtimesFixtures

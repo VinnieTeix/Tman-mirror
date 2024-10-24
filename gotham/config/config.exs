@@ -23,6 +23,13 @@ config :gothapp, TmanWeb.Endpoint,
   pubsub_server: Tman.PubSub,
   live_view: [signing_salt: "9GpRxHTG"]
 
+config :cors_plug,
+  origin: ["http://localhost:8080"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true,
+  headers: ["Authorization", "Content-Type"]
+
+
 # Configures the mailer
 #
 # By default it uses the "Local" adapter which stores the emails

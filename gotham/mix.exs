@@ -32,7 +32,7 @@ defmodule Tman.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.7.14"},
+      {:phoenix, "~> 1.7.9"},
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.10"},
       {:postgrex, ">= 0.0.0"},
@@ -53,7 +53,12 @@ defmodule Tman.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
-      {:bandit, "~> 1.5"}
+      {:bandit, "~> 1.5"},
+      {:plug_cowboy, "~> 2.5"},
+      {:dotenv, "~> 3.0.0"},
+      {:cors_plug, "~> 3.0"},
+      {:bcrypt_elixir, "~> 3.0"},
+      {:joken, "~> 2.6.0"}
     ]
   end
 

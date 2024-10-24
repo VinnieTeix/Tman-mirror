@@ -2,26 +2,54 @@ defmodule TmanWeb.Router do
   use TmanWeb, :router
 
   pipeline :api do
-    plug :accepts, ["json"]
+    plug(CORSPlug, origin: "*")
+    plug(:accepts, ["json"])
+    plug(:fetch_session)
+  end
+
+  pipeline :auth do
+    plug(TmanWeb.Plugs.VerifyToken)
+  end
+
+  pipeline :api_unauth do
+    plug(CORSPlug, origin: "*")
+    plug(:accepts, ["json"])
+    plug(:fetch_session)
+  end
+
+  scope "/api/auth", TmanWeb do
+    pipe_through(:api_unauth)
+    post("/login", UserController, :login_user)
+    post("/users", UserController, :create_user)
   end
 
   scope "/api", TmanWeb do
-    pipe_through :api
-    resources "/users", UserController, only: [:index, :show, :create, :update, :delete]
+    pipe_through([:api, :auth])
+    get("/users/all", UserController, :get_all_users)
+    get("/users/:id", UserController, :get_user_by_id)
+    get("/users", UserController, :get_user_by_email_and_username)
+    put("/users/:id", UserController, :update_user)
+    delete("/users/:id", UserController, :delete_user)
 
-    get "/workingtime/:userID", WorkingtimeController, :index
-    get "/workingtime/:userID/:id", WorkingtimeController, :show
-    post "/workingtime/:userID", WorkingtimeController, :create
-    put "/workingtime/:id", WorkingtimeController, :update
-    delete "/workingtime/:id", WorkingtimeController, :delete
+    get("/workingtimes/:user/:id", WorkingtimesController, :show)
+    get("/workingtimes/:userID", WorkingtimesController, :get_workingtime_by_dates)
+    post("/workingtimes/:userID", WorkingtimesController, :create)
+    put("/workingtimes/:id", WorkingtimesController, :update)
+    delete("/workingtimes/:id", WorkingtimesController, :delete)
 
-    get "/clocks/:userID", ClockController, :index
-    post "/clocks/:userID", ClockController, :create
+    post("/clocks/:userID", ClockController, :create_clock)
+    get("/clocks/:userID", ClockController, :get_clock_by_user_id)
 
+    get("/teams", TeamController, :index)
+    post("/teams", TeamController, :create_team)
+    patch("/teams/:team_id/:user_id", TeamController, :add_user_to_team)
+    get("/teams/:id", TeamController, :show)
+    put("/teams/:id", TeamController, :update)
+    delete("/teams/:id", TeamController, :delete)
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
-  if Application.compile_env(:gothapp, :dev_routes) do
+  if Application.compile_env(:api, :dev_routes) do
     # If you want to use the LiveDashboard in production, you should put
     # it behind authentication and allow only admins to access it.
     # If your application does not have an admins-only section yet,
@@ -30,10 +58,10 @@ defmodule TmanWeb.Router do
     import Phoenix.LiveDashboard.Router
 
     scope "/dev" do
-      pipe_through [:fetch_session, :protect_from_forgery]
+      pipe_through([:fetch_session, :protect_from_forgery])
 
-      live_dashboard "/dashboard", metrics: TmanWeb.Telemetry
-      forward "/mailbox", Plug.Swoosh.MailboxPreview
+      live_dashboard("/dashboard", metrics: TmanWeb.Telemetry)
+      forward("/mailbox", Plug.Swoosh.MailboxPreview)
     end
   end
 end

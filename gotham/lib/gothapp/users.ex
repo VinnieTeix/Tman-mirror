@@ -4,117 +4,111 @@ defmodule Tman.Users do
   """
 
   import Ecto.Query, warn: false
+  require Logger
   alias Tman.Repo
 
   alias Tman.Users.User
 
   @doc """
-  Returns the list of users.
-
-  ## Examples
-
-      iex> list_users()
-      [%User{}, ...]
-
+  Lists all users.
   """
   def list_users do
     Repo.all(User)
   end
 
-  def list_users_by_params(username, email) do
-    cond do
-      username && email ->
-        Repo.all(from(u in User, where: u.username == ^username and u.email == ^email))
-
-      username ->
-        Repo.all(from(u in User, where: u.username == ^username))
-
-      email ->
-        Repo.all(from(u in User, where: u.email == ^email))
-
-      true ->
-        Repo.all(User)
+  @doc """
+  Gets a single user by ID.
+  """
+  def get_user_by_id(id) do
+    case Repo.get(User, id) do
+      nil -> {:error, :not_found}
+      user -> {:ok, user}
     end
   end
 
   @doc """
-  Gets a single user.
-
-  Raises `Ecto.NoResultsError` if the User does not exist.
-
-  ## Examples
-
-      iex> get_user!(123)
-      %User{}
-
-      iex> get_user!(456)
-      ** (Ecto.NoResultsError)
-
+  Gets a single user by email and username.
   """
-  def get_user!(id), do: Repo.get!(User, id)
+  def get_user_by_email_and_username(email, username) do
+    case Repo.get_by(User, email: email, username: username) do
+      nil -> {:error, :not_found}
+      user -> {:ok, user}
+    end
+  end
+
+  def get_user_by_email(email) do
+    Logger.info("get_user_by_email: #{email}")
+
+    case Repo.get_by(User, email: email) do
+      nil -> {:error, :not_found}
+      user -> {:ok, user}
+    end
+  end
 
   @doc """
   Creates a user.
-
-  ## Examples
-
-      iex> create_user(%{field: value})
-      {:ok, %User{}}
-
-      iex> create_user(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
   """
   def create_user(attrs \\ %{}) do
-    %User{}
-    |> User.changeset(attrs)
-    |> Repo.insert()
+    case %User{}
+         |> User.changeset(attrs)
+         |> hash_password()
+         |> Repo.insert() do
+      {:ok, user} -> {:ok, user}
+      {:error, changeset} -> {:error, changeset}
+    end
+  end
+
+  defp hash_password(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{password: password}} ->
+        hashed_password = Bcrypt.hash_pwd_salt(password)
+        Ecto.Changeset.put_change(changeset, :password, hashed_password)
+
+      _ ->
+        changeset
+    end
+  end
+
+  @doc """
+  Authenticates a user by email and password and returns a token.
+  """
+  def authenticate_user(email, password) do
+    Logger.info("authenticate_user: #{email}")
+
+    case get_user_by_email(email) do
+      {:ok, user} ->
+        case Bcrypt.verify_pass(password, user.password) do
+          true ->
+            {:ok, user}
+
+          false ->
+            {:error, :unauthorized}
+        end
+
+      {:error, _} ->
+        {:error, :unauthorized}
+    end
   end
 
   @doc """
   Updates a user.
-
-  ## Examples
-
-      iex> update_user(user, %{field: new_value})
-      {:ok, %User{}}
-
-      iex> update_user(user, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
   """
   def update_user(%User{} = user, attrs) do
-    user
-    |> User.changeset(attrs)
-    |> Repo.update()
+    case user
+         |> User.changeset(attrs)
+         |> Repo.update() do
+      {:ok, updated_user} -> {:ok, updated_user}
+      {:error, changeset} -> {:error, changeset}
+    end
   end
 
   @doc """
   Deletes a user.
-
-  ## Examples
-
-      iex> delete_user(user)
-      {:ok, %User{}}
-
-      iex> delete_user(user)
-      {:error, %Ecto.Changeset{}}
-
   """
   def delete_user(%User{} = user) do
-    Repo.delete(user)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking user changes.
-
-  ## Examples
-
-      iex> change_user(user)
-      %Ecto.Changeset{data: %User{}}
-
-  """
-  def change_user(%User{} = user, attrs \\ %{}) do
-    User.changeset(user, attrs)
+    case Repo.delete(user) do
+      {:ok, deleted_user} -> {:ok, deleted_user}
+      {:error, _changeset} -> {:error, :not_found}
+    end
   end
 end

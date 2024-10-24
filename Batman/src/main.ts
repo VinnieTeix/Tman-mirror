@@ -1,21 +1,24 @@
-import './assets/main.css'
-
-import Aura from '@primevue/themes/aura'
 import { createPinia } from 'pinia'
-import PrimeVue from 'primevue/config'
 import { createApp } from 'vue'
-
+import { globalCookiesConfig } from 'vue3-cookies'
 import App from './App.vue'
-import router from './router'
+import { router } from './router/index'
+import './assets/main.css'
+import 'primeicons/primeicons.css'
 
 const app = createApp(App)
-app.use(PrimeVue, {
-  theme: {
-    preset: Aura,
-  },
-})
 
-app.use(createPinia())
+const pinia = createPinia()
+app.use(pinia)
+
 app.use(router)
+
+globalCookiesConfig({
+  expireTimes: '30d',
+  path: '/',
+  domain: '',
+  secure: true,
+  sameSite: 'None',
+})
 
 app.mount('#app')

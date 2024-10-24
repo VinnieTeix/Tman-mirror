@@ -1,6 +1,6 @@
 defmodule Tman.Clocks do
   @moduledoc """
-  The Clocks context.
+  The Tman.Clocks context.
   """
 
   import Ecto.Query, warn: false
@@ -36,6 +36,13 @@ defmodule Tman.Clocks do
 
   """
   def get_clock!(id), do: Repo.get!(Clock, id)
+
+  def get_clock_by_user_id!(id) do
+    case Repo.one(from(c in Clock, where: c.user == ^id)) do
+      %Clock{} = clock -> clock
+      _ -> nil
+    end
+  end
 
   @doc """
   Creates a clock.

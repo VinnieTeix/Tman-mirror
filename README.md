@@ -61,3 +61,7 @@ npm install -D tailwindcss postcss autoprefixer
 npx tailwindcss init -p
 
 npm add radix-vue
+
+docker exec -it t-poo-700-par_17-frontend-1 sh
+vi /etc/nginx/conf.d/default.conf
+docker-compose up --build
