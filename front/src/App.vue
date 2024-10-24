@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
 }
 </script>
 
@@ -28,7 +28,8 @@ body {
 #app {
   position: relative;
   overflow: hidden;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
 }
 
 css-doodle {

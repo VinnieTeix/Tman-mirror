@@ -1,54 +1,64 @@
 <template>
-<Chart
-    :size="{ width: 200, height: 100 }"
-    :data="barData"
-    :margin="margin"
-    :direction="direction"
-    :axis="axis">
-   <Layers />
-   <Widgets />
-  </Chart>
+  <Bar
+    id="my-chart-id"
+    :options="chartOptions"
+    :data="chartData"
+    :style="mystyle"
+  />
 </template>
 
-  <script>
-import { Chart, Grid, Line } from 'vue3-charts'
-import Layers from './layers.vue';
-import Widgets from './widgets.vue';
+<script>
+import { Bar } from 'vue-chartjs'
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Colors,
+} from 'chart.js'
+ChartJS.register(Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale)
 
 export default {
+  name: 'BarChart',
   props: {
     barData: {
-        type: Object,
-        required: true
-    }
+      type: Object,
+      required: true,
+    },
+    title: {
+      type: String,
+      required: false,
+      default: 'hours in the month',
+    },
   },
   components: {
-    Chart,
-    Grid,
-    Layers,
-    Widgets,
-    Line
+    Bar,
+  },
+  computed: {
+    mystyle() {
+      return {
+        width: '100%',
+        height: '145%',
+      }
+    },
   },
   data() {
     return {
-        direction: 'horizontal',
-        margin: {
-            left: 0,
-            top: 20,
-            right: 20,
-            bottom: 0
-        },
-        axis: {
-          primary: {
-            type: 'band'
+      chartData: this.barData,
+      chartOptions: {
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: this.title,
           },
-          secondary: {
-            domain: ['dataMin', 'dataMax + 100'],
-            type: 'linear',
-            ticks: 8
-          }
-        }
+          legend: { display: false },
+        },
+      },
     }
-  }
+  },
 }
-</script> 
+</script>

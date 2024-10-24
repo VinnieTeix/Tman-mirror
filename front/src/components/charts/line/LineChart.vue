@@ -1,44 +1,68 @@
 <template>
-    <div class="chart">
-        <Chart
-            :data="lineData"
-            :size="{ width: 600, height: 300 }"
-            :margin="margin"
-            :direction="direction">
-
-            <template #layers>
-            <Grid strokeDasharray="2,2" />
-            <Line :dataKeys="['name', 'pl']" />
-            </template>
-
-        </Chart>
-    </div>
+  <Line :data="chartData" :options="chartOptions" :style="mystyle" />
 </template>
 <script>
-import { Chart, Grid, Line } from 'vue3-charts'
-    export default {
-        props: {
-            lineData: {
-                type: Object,
-                required: true
-            }
-        },
-    components: {
-        Chart,
-        Grid,
-        Line 
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js'
+import { Line } from 'vue-chartjs'
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+)
+
+export default {
+  props: {
+    lineData: {
+      type: Object,
+      required: true,
     },
-    data() {
-        return {
-            direction: 'horizontal',
-            margin: {
-            left: 0,
-            top: 20,
-            right: 20,
-            bottom: 0
-            },
-        }
+    title: {
+      type: String,
+      required: false,
+      default: 'Hours in the week',
+    },
+  },
+  computed: {
+    mystyle() {
+      return {
+        width: '100%',
+        height: '120%',
+      }
+    },
+  },
+  components: {
+    Line,
+  },
+  data() {
+    return {
+      chartData: this.lineData,
+      chartOptions: {
+        maintainAspectRatio: false,
+        responsive: true,
+        plugins: {
+          title: {
+            display: true,
+            text: this.title,
+          },
+          legend: { display: false },
+        },
+      },
     }
-}    
+  },
+}
 </script>
+
 <style></style>
