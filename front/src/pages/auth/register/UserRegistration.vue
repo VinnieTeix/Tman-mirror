@@ -9,6 +9,14 @@
               <div class="input-group">
                   <input type="password" v-model="password" placeholder="********">
               </div>
+            <div class="input-group">
+            <select v-model="role">
+              <option :value="null" selected disabled>Your role</option>
+              <option>User</option>
+              <option>Manager</option>
+              <option>Admin</option>
+            </select>
+            </div>
                   <button type="submit" class="signButton" @click="postUser"> Register </button>
           </form>
         </base-card>
@@ -23,29 +31,35 @@ export default {
   name: 'register',
     data() {
         return {
+        role: null,
         password: '',
         email: ''
       }
     },
     methods: {
-      postUser() {
-        const store = useGlobalStore();
-        console.log("Method called")
-        axios.post("http://localhost:4000/api/users", {
-            user: {
-              username: this.username,
-              email: this.email,
-              password: this.password
-            }
-        })
-        store.setUserID(this.user.username);
-            console.log(this.username, this.email, this.password)
-            this.$router.push('/chartmanager')
-        }
+        postUser() {
+          const store = useGlobalStore();
+          console.log("Method called")
+          axios.post("http://localhost:4000/api/users", {
+              user: {
+                username: this.username,
+                email: this.email,
+                password: this.password,
+                role: this.role.toLowerCase()
+              }
+          })
+          store.setUserID(this.user[0].id);
+              console.log(this.username, this.email, this.password)
+              this.$router.push('/chartmanager')
+          }
     },
     }
 </script>
 <style scoped>
+option:disabled {
+  color: #9ca3af;
+}
+
 h1 {
   font-size: 2.5em;
   margin-bottom: 20px;
@@ -90,6 +104,12 @@ input {
   width: 100%;
 }
 
+select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
 .signButton {
   display: flex;
   justify-content: center;

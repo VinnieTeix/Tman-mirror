@@ -42,14 +42,13 @@ export default {
       loginUser() {
         const store = useGlobalStore();
         const username = this.email.split('@')[0] + this.email.split('@')[1].split('.')[0]
-        store.setUserID(username);
         if (this.users && this.users.some(user => user.email === this.email)) {
-          console.log('Email found in users array');
+          console.log(username + 'found in users array');
+          store.setUserID(this.users[0].id);
           this.$router.push('/chartmanager');
         } else {
           console.log('Email not found in users array');
         }
-
       }
     }
 }

@@ -19,7 +19,8 @@ defmodule TmanWeb.ClockJSON do
     %{
       id: clock.id,
       time: clock.time,
-      status: clock.status
+      status: clock.status,
+      user: user.id
     }
   end
 end

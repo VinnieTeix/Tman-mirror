@@ -5,15 +5,16 @@ defmodule Tman.Users.User do
   schema "users" do
     field :username, :string
     field :email, :string
-
+    field :password, :string
+    field :role, :string
     timestamps(type: :utc_datetime)
   end
 
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:username, :email])
-    |> validate_required([:username, :email])
+    |> cast(attrs, [:username, :email, :password, :role])
+    |> validate_required([:username, :email, :password, :role])
     |> validate_format(:email, ~r/@/)
   end
 end
