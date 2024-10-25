@@ -35,14 +35,13 @@ export default {
           .catch(error => {
             console.log(error)
           })
-
         },
 
     methods: {
       loginUser() {
         const store = useGlobalStore();
-        const username = this.email.split('@')[0] + this.email.split('@')[1].split('.')[0]
-        if (this.users && this.users.some(user => user.email === this.email)) {
+        const username = this.email.split('@')[0]
+        if (this.users && this.users.some(user => user.email === this.email && user.password === this.password)) {
           console.log(username + 'found in users array');
           store.setUserID(this.users[0].id);
           this.$router.push('/chartmanager');

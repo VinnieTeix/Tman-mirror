@@ -10,12 +10,12 @@
                   <input type="password" v-model="password" placeholder="********">
               </div>
             <div class="input-group">
-            <select v-model="role">
-              <option :value="null" selected disabled>Your role</option>
-              <option>User</option>
-              <option>Manager</option>
-              <option>Admin</option>
-            </select>
+              <select v-model="role">
+                <option :value="null" selected disabled>Your role</option>
+                <option value="user">User</option>
+                <option value="manager">Manager</option>
+                <option value="admin">Admin</option>
+              </select>
             </div>
                   <button type="submit" class="signButton" @click="postUser"> Register </button>
           </form>
@@ -31,27 +31,36 @@ export default {
   name: 'register',
     data() {
         return {
-        role: null,
-        password: '',
-        email: ''
+          username: '',
+          email: '',
+          password: '',
+          role: null,
       }
     },
     methods: {
-        postUser() {
+        async postUser() {
           const store = useGlobalStore();
-          console.log("Method called")
-          axios.post("http://localhost:4000/api/users", {
+          try {
+            const response = await axios.post("http://localhost:4000/api/users", {
               user: {
-                username: this.username,
+                username: this.email.split('@')[0], // Ensure username is passed
                 email: this.email,
                 password: this.password,
-                role: this.role.toLowerCase()
-              }
-          })
-          store.setUserID(this.user[0].id);
-              console.log(this.username, this.email, this.password)
-              this.$router.push('/chartmanager')
+                role: this.role.toLowerCase(), // Convert role to lowercase
+              },
+            });
+
+            // Assuming the user object is in the response
+            const userID = response.data.user.id;
+            store.setUserID(userID);
+
+            // Redirect to the chart manager page
+            this.$router.push("/chartmanager");
+          } catch (error) {
+            console.error("Error creating user:", error.response.data);
           }
+
+        }
     },
     }
 </script>
