@@ -11,7 +11,6 @@
           <Button v-if="flag" @click="toggleFlag">Clock In</Button>
           <Button v-else @click="toggleFlag">Clock Out</Button>
         </div>
-      </base-card>
     </div>
   </div>
 </template>
@@ -19,13 +18,21 @@
 import TheNavigation from '../../components/nav/TheNavigation.vue'
 import LineChart from '../../components/charts/line/LineChart.vue'
 import Button from '../../components/ui/Button.vue'
-import BaseCard from '../../components/ui/BaseCard.vue'
+import axios from "axios";
+import {useGlobalStore} from '@/store/store.js'
+
 export default {
   components: {
     TheNavigation,
     LineChart,
     Button,
     BaseCard,
+  },
+  setup() {
+    const store = useGlobalStore();
+    return {
+      userID: store.userID
+    }
   },
   data() {
     return {
@@ -43,7 +50,26 @@ export default {
     }
   },
   methods: {
-    toggleFlag() {
+    clockIn() {
+      axios.post("http://localhost:4000/api/clocks/:userID", {
+        clock: {
+          status: true,
+          time: new Date(),
+          user: this.userID,
+        },
+      })
+      console.log(this.userID)
+      this.flag = !this.flag
+    },
+    clockOut(){
+      axios.post("http://localhost:4000/api/clocks/:userID", {
+        clock: {
+          status: false,
+          time: new Date(),
+          user: this.userID,
+        }
+      })
+      console.log(this.userID)
       this.flag = !this.flag
     },
   },

@@ -1,5 +1,6 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import { createPinia } from 'pinia';
 import App from './App.vue'
 import NotFound from './pages/NotFound.vue'
 import TheHome from './pages/home/TheHome.vue'
@@ -26,7 +27,9 @@ const router = createRouter({
 })
 
 const app = createApp(App)
+const pinia = createPinia();
 
+app.use(pinia);
 app.use(router)
 app.component('base-card', BaseCard)
 

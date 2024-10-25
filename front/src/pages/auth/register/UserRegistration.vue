@@ -17,6 +17,7 @@
 <script>
 
 import axios from 'axios';
+import {useGlobalStore} from "@/store/store.js";
 
 export default {
   name: 'register',
@@ -28,13 +29,16 @@ export default {
     },
     methods: {
       postUser() {
+        const store = useGlobalStore();
         console.log("Method called")
         axios.post("http://localhost:4000/api/users", {
-            user: { username: this.email.split('@')[0] + this.email.split('@')[1].split('.')[0],
-            email: this.email,
-            password: this.password
+            user: {
+              username: this.username,
+              email: this.email,
+              password: this.password
             }
         })
+        store.setUserID(this.user.username);
             console.log(this.username, this.email, this.password)
             this.$router.push('/chartmanager')
         }
@@ -101,7 +105,7 @@ input {
 }
 
 .registerButton:hover {
-    
+
   background-color: rgb(122, 89, 206);
   color: #000;
 }
