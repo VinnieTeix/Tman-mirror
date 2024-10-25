@@ -3,13 +3,14 @@
     <the-navigation />
     <div class="container">
       <h1>Clocks Page</h1>
-      <div class="column">
-        <div class="line">
-          <line-chart :line-data="pie" />
+      <base-card>
+        <div class="column">
+          <div class="line">
+            <line-chart :line-data="pie" />
+          </div>
+          <Button v-if="flag" @click="toggleFlag">Clock In</Button>
+          <Button v-else @click="toggleFlag">Clock Out</Button>
         </div>
-        <Button v-if="flag" @click="clockIn">Clock In</Button>
-        <Button v-else @click="clockOut">Clock Out</Button>
-      </div>
     </div>
   </div>
 </template>
@@ -25,6 +26,7 @@ export default {
     TheNavigation,
     LineChart,
     Button,
+    BaseCard,
   },
   setup() {
     const store = useGlobalStore();
@@ -88,6 +90,9 @@ h1 {
   align-items: center;
   margin-top: 20px;
 }
+.card {
+  width: 140%;
+}
 .chart {
   background: #fff;
   color: #000;
@@ -105,8 +110,11 @@ h1 {
 @media screen and (max-width: 600px) {
   .column {
     width: 100%;
-    display: block;
-    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+  }
+  .card {
+    width: 100%;
   }
 }
 </style>

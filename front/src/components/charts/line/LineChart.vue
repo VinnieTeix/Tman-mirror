@@ -1,5 +1,5 @@
 <template>
-  <Line :data="chartData" :options="chartOptions" :style="mystyle" />
+  <Line :data="chartData" :options="chartOptions" />
 </template>
 <script>
 import {
@@ -33,14 +33,6 @@ export default {
       type: String,
       required: false,
       default: 'Hours in the week',
-    },
-  },
-  computed: {
-    mystyle() {
-      return {
-        width: '100%',
-        height: '120%',
-      }
     },
   },
   components: {

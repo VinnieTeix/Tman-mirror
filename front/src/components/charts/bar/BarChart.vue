@@ -1,10 +1,5 @@
 <template>
-  <Bar
-    id="my-chart-id"
-    :options="chartOptions"
-    :data="chartData"
-    :style="mystyle"
-  />
+  <Bar id="my-chart-id" :options="chartOptions" :data="chartData" />
 </template>
 
 <script>
@@ -36,14 +31,6 @@ export default {
   },
   components: {
     Bar,
-  },
-  computed: {
-    mystyle() {
-      return {
-        width: '100%',
-        height: '145%',
-      }
-    },
   },
   data() {
     return {

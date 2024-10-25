@@ -50,4 +50,21 @@ a {
   padding: 0.5rem 1.5rem;
   display: inline-block;
 }
+
+@media screen and (max-width: 768px) {
+  header {
+    height: 10rem;
+  }
+  nav {
+    display: flex;
+    justify-content: center;
+  }
+  li {
+    margin: 1rem 0;
+    padding: 5%;
+  }
+  a {
+    padding: 0.5rem 0;
+  }
+}
 </style>
