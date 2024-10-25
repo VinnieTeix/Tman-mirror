@@ -8,9 +8,10 @@
           <div class="line">
             <line-chart :line-data="pie" />
           </div>
-          <Button v-if="flag" @click="toggleFlag">Clock In</Button>
-          <Button v-else @click="toggleFlag">Clock Out</Button>
+          <Button v-if="flag" @click="clockOut">Clock In</Button>
+          <Button v-else @click="clockIn">Clock Out</Button>
         </div>
+        </base-card>
     </div>
   </div>
 </template>
@@ -26,7 +27,6 @@ export default {
     TheNavigation,
     LineChart,
     Button,
-    BaseCard,
   },
   setup() {
     const store = useGlobalStore();
