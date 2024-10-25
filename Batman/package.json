@@ -19,6 +19,7 @@
     "@primevue/themes": "^4.1.1",
     "@vue/compiler-sfc": "^3.5.12",
     "@vue/runtime-core": "^3.5.12",
+    "axios": "^1.7.7",
     "chart.js": "^4.4.5",
     "jwt-decode": "^4.0.0",
     "pinia": "^2.2.4",

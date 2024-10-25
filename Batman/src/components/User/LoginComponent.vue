@@ -3,20 +3,17 @@
     <form class="bg-white rounded p-8" @submit.prevent="login">
       <h1 class="text-xl pb-3">Login</h1>
       <div class="identity-input mb-4">
-        <label for="identity" class="block text-gray-700 text-sm font-bold mb-2">
-          Email
-        </label>
+        <label for="identity" class="block text-gray-700 text-sm font-bold mb-2">Email</label>
         <input id="identity"
-          class="shadow appearance-none borderrounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           type="text" placeholder="Enter your email" aria-describedby="usernameHelp" v-model="email" />
       </div>
 
       <div class="password-input mb-6">
-        <label for="identity" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
-
+        <label for="password" class="block text-gray-700 text-sm font-bold mb-2">Password</label>
         <input aria-describedby="emailHelp" v-model="password"
-          class="shadow appearance-none borderrounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-          id="password" type="password" placeholder="Enter your passsword" />
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          id="password" type="password" placeholder="Enter your password" />
       </div>
 
       <div class="flex items-center justify-between">
@@ -82,9 +79,9 @@ export default {
         });
 
         if (userStore.getUser) {
-          this.$router.push(checkUser());
+          this.$router.push(this.checkUser);
         } else {
-          console.error("Unexpected response from the API:", response);
+          console.error("Unexpected response from the API.");
         }
       } catch (error) {
         console.error("API request failed:", error);

@@ -6,7 +6,7 @@
       </router-link>
 
       <router-link v-if="userIsValid" v-on:click="logout" to="/login">
-        <i class="pi pi-sign-out"></i> <!-- Logout icon -->
+        <i class="pi pi-sign-out"></i>
       </router-link>
 
       <router-link v-if="!userIsValid" to="/login">
