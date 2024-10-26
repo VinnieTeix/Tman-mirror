@@ -9,6 +9,7 @@ lerna-debug.log*
 dev-dist
 node_modules
 .DS_Store
+yarn.lock
 dist
 dist-ssr
 coverage
