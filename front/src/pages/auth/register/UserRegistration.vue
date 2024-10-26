@@ -1,49 +1,60 @@
 <template>
-    <div class="login-container">
-        <h1>Registration Page</h1>
-        <base-card>
-          <form @submit.prevent>
-              <div class="input-group">
-                  <input type="email" v-model="email" placeholder="email@email.com">
-              </div>
-              <div class="input-group">
-                  <input type="password" v-model="password" placeholder="********">
-              </div>
-                  <button type="submit" class="signButton" @click="postUser"> Register </button>
-          </form>
-        </base-card>
-    </div>
+  <div class="login-container">
+    <h1>Registration Page</h1>
+    <base-card>
+      <form @submit.prevent>
+        <div class="input-group">
+          <input type="text" v-model="username" placeholder="Username" required>
+        </div>
+        <div class="input-group">
+          <input type="email" v-model="email" placeholder="email@email.com">
+        </div>
+        <div class="input-group">
+          <input type="password" v-model="password" placeholder="********">
+        </div>
+        <button type="submit" class="signButton" @click="postUser"> Register </button>
+      </form>
+    </base-card>
+  </div>
 </template>
 <script>
 
+import { useGlobalStore } from "@/store/store.js";
 import axios from 'axios';
-import {useGlobalStore} from "@/store/store.js";
 
 export default {
   name: 'register',
-    data() {
-        return {
-        password: '',
-        email: ''
-      }
-    },
-    methods: {
-      postUser() {
-        const store = useGlobalStore();
-        console.log("Method called")
-        axios.post("http://localhost:4000/api/users", {
-            user: {
-              username: this.username,
-              email: this.email,
-              password: this.password
-            }
-        })
-        store.setUserID(this.user.username);
-            console.log(this.username, this.email, this.password)
-            this.$router.push('/chartmanager')
-        }
-    },
+  data() {
+    return {
+      username: '',
+      password: '',
+      email: ''
     }
+  },
+  methods: {
+    postUser() {
+      const store = useGlobalStore();
+      console.log("Method called");
+
+      axios.post("http://localhost:4000/api/users", {
+        user: {
+          username: this.username,
+          email: this.email,
+          password: this.password
+        }
+      })
+        .then(response => {
+          store.setUserID(this.username);
+          console.log(this.username, this.email, this.password);
+          this.$router.push('/chartmanager');
+        })
+        .catch(error => {
+          console.error("Error during registration:", error);
+        });
+    }
+
+  },
+}
 </script>
 <style scoped>
 h1 {
@@ -51,6 +62,7 @@ h1 {
   margin-bottom: 20px;
   text-align: center;
 }
+
 .login-container {
   display: flex;
   flex-direction: column;
@@ -72,13 +84,14 @@ h2 {
   margin-bottom: 20px;
   text-align: center;
 }
+
 .input-group {
   display: grid;
   margin-bottom: 15px;
 }
 
 label {
-    margin-right: 1em;
+  margin-right: 1em;
   margin-bottom: 5px;
   font-weight: bold;
 }
@@ -117,7 +130,8 @@ input {
   text-decoration: none;
   padding: 10px;
   margin-top: 1em;
-  background-color: #542ded; /* Primary color */
+  background-color: #542ded;
+  /* Primary color */
   color: white;
   font-size: 15px;
   border: none;
