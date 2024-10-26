@@ -2,26 +2,25 @@
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import TheNavigation from "@/components/nav/TheNavigation.vue";
+import TheNavigation from '@/components/nav/TheNavigation.vue'
 
 export default {
-
   components: {
     TheNavigation,
-    FullCalendar // make the <FullCalendar> tag available
+    FullCalendar, // make the <FullCalendar> tag available
   },
 
-  data: function() {
+  data: function () {
     return {
       calendarOptions: {
         plugins: [
           dayGridPlugin,
-          interactionPlugin // needed for dateClick
+          interactionPlugin, // needed for dateClick
         ],
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          right: 'dayGridMonth,timeGridWeek,timeGridDay',
         },
         initialView: 'dayGridMonth', // alternatively, use the `events` setting to fetch from a feed
         editable: true,
@@ -31,19 +30,18 @@ export default {
         weekends: true,
         select: this.handleDateSelect,
         eventClick: this.handleEventClick,
-        eventsSet: this.handleEvents
+        eventsSet: this.handleEvents,
         /* you can update a remote database when these fire:
         eventAdd:
         eventChange:
         eventRemove:
         */
       },
-      currentEvents: []
+      currentEvents: [],
     }
   },
 
   methods: {
-
     handleWeekendsToggle() {
       this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
     },
@@ -58,34 +56,34 @@ export default {
         calendarApi.addEvent({
           start: selectInfo.startStr,
           end: selectInfo.endStr,
-          allDay: selectInfo.allDay
+          allDay: selectInfo.allDay,
         })
       }
     },
 
     handleEventClick(clickInfo) {
-      if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+      if (
+        confirm(
+          `Are you sure you want to delete the event '${clickInfo.event.title}'`,
+        )
+      ) {
         clickInfo.event.remove()
       }
     },
 
     handleEvents(events) {
       this.currentEvents = events
-    }
-  }
+    },
+  },
 }
 </script>
 
 <template>
-  <the-navigation/>
-  <div class='demo-app'>
-
-    <div class='demo-app-main'>
-      <FullCalendar
-        class='demo-app-calendar'
-        :options='calendarOptions'
-      >
-        <template v-slot:eventContent='arg'>
+  <the-navigation />
+  <div class="demo-app">
+    <div class="demo-app-main">
+      <FullCalendar class="demo-app-calendar" :options="calendarOptions">
+        <template v-slot:eventContent="arg">
           <b>{{ arg.timeText }}</b>
           <i>{{ arg.event.title }}</i>
         </template>
@@ -94,8 +92,7 @@ export default {
   </div>
 </template>
 
-<style lang='css'>
-
+<style lang="css">
 h2 {
   margin: 0;
   font-size: 16px;
@@ -111,22 +108,26 @@ li {
   padding: 0;
 }
 
-b { /* used for event dates/times */
+b {
+  /* used for event dates/times */
   margin-right: 3px;
 }
 
 .demo-app {
   display: flex;
   min-height: 100%;
-  font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
+  font-family:
+    Arial,
+    Helvetica Neue,
+    Helvetica,
+    sans-serif;
   font-size: 14px;
 }
 
-.demo-app-calendar{
+.demo-app-calendar {
   color: #000000;
-  background: #FFFFFF;
+  background: #ffffff;
 }
-
 
 .demo-app-sidebar {
   width: 300px;
@@ -144,9 +145,9 @@ b { /* used for event dates/times */
   padding: 3em;
 }
 
-.fc { /* the calendar root */
+.fc {
+  /* the calendar root */
   max-width: 1100px;
   margin: 0 auto;
 }
-
 </style>

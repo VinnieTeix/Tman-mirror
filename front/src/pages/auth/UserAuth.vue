@@ -1,55 +1,65 @@
 <template>
-    <div class="login-container">
-        <h1>Login Page</h1>
-        <base-card>
-          <form @submit.prevent="loginUser">
-              <div class="input-group">
-                  <input type="email" v-model="email" placeholder="email@email.com">
-              </div>
-              <div class="input-group">
-                  <input type="password" v-model="password" placeholder="*********">
-              </div>
-                  <button class="signButton" type="submit" @click="loginUser.prevent">Login</button>
-                  <router-link class="registerButton" to="/register">Register</router-link>
-          </form>
-        </base-card>
-    </div>
+  <div class="login-container">
+    <h1>Login Page</h1>
+    <base-card>
+      <form @submit.prevent="loginUser">
+        <div class="input-group">
+          <input type="email" v-model="email" placeholder="email@email.com" />
+        </div>
+        <div class="input-group">
+          <input type="password" v-model="password" placeholder="*********" />
+        </div>
+        <button class="signButton" type="submit" @click="loginUser.prevent">
+          Login
+        </button>
+        <router-link class="registerButton" to="/register"
+          >Register</router-link
+        >
+      </form>
+    </base-card>
+  </div>
 </template>
 <script>
-import axios from 'axios';
-import 'css-doodle';
-import {useGlobalStore} from "@/store/store.js";
+import axios from 'axios'
+import 'css-doodle'
+import { useGlobalStore } from '@/store/store.js'
 
 export default {
   name: 'auth',
-    data() {
-      return {
-          email: '',
-          password: '',
-          users: null
+  data() {
+    return {
+      email: '',
+      password: '',
+      users: null,
+    }
+  },
+  mounted() {
+    axios
+      .get('http://localhost:4000/api/users')
+      .then(response => (this.users = response.data.data))
+      .catch(error => {
+        console.log(error)
+      })
+  },
+
+  methods: {
+    loginUser() {
+      const store = useGlobalStore()
+      const username = this.email.split('@')[0]
+      if (
+        this.users &&
+        this.users.some(
+          user => user.email === this.email && user.password === this.password,
+        )
+      ) {
+        console.log(username + 'found in users array')
+        store.setUserID(this.users[0].id)
+        this.$router.push('/chartmanager')
+      } else {
+        console.log('Email not found in users array')
       }
     },
-    mounted () {
-          axios.get("http://localhost:4000/api/users")
-          .then(response =>  (this.users = response.data.data))
-          .catch(error => {
-            console.log(error)
-          })
-        },
-
-    methods: {
-      loginUser() {
-        const store = useGlobalStore();
-        const username = this.email.split('@')[0]
-        if (this.users && this.users.some(user => user.email === this.email && user.password === this.password)) {
-          console.log(username + 'found in users array');
-          store.setUserID(this.users[0].id);
-          this.$router.push('/chartmanager');
-        } else {
-          console.log('Email not found in users array');
-        }
-      }
-    }
+  },
 }
 </script>
 <style scoped>
@@ -84,7 +94,7 @@ h2 {
 }
 
 label {
-    margin-right: 1em;
+  margin-right: 1em;
   margin-bottom: 5px;
   font-weight: bold;
 }
@@ -110,7 +120,6 @@ input {
 }
 
 .registerButton:hover {
-
   background-color: rgb(122, 89, 206);
   color: #000;
 }
@@ -128,7 +137,9 @@ input {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .signButton:hover {

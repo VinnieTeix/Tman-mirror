@@ -115,7 +115,7 @@ export default {
   border-radius: 25px;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1000px) {
   .chart {
     grid-template-columns: 1fr;
   }

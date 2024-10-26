@@ -1,68 +1,68 @@
 <template>
-    <div class="login-container">
-        <h1>Registration Page</h1>
-        <base-card>
-          <form @submit.prevent>
-              <div class="input-group">
-                  <input type="email" v-model="email" placeholder="email@email.com">
-              </div>
-              <div class="input-group">
-                  <input type="password" v-model="password" placeholder="********">
-              </div>
-            <div class="input-group">
-              <select v-model="role">
-                <option :value="null" selected disabled>Your role</option>
-                <option value="user">User</option>
-                <option value="manager">Manager</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-                  <button type="submit" class="signButton" @click="postUser"> Register </button>
-          </form>
-        </base-card>
-    </div>
+  <div class="login-container">
+    <h1>Registration Page</h1>
+    <base-card>
+      <form @submit.prevent>
+        <div class="input-group">
+          <input type="email" v-model="email" placeholder="email@email.com" />
+        </div>
+        <div class="input-group">
+          <input type="password" v-model="password" placeholder="********" />
+        </div>
+        <div class="input-group">
+          <select v-model="role">
+            <option :value="null" selected disabled>Your role</option>
+            <option value="employee">Employee</option>
+            <option value="manager">Manager</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <button type="submit" class="signButton" @click="postUser">
+          Register
+        </button>
+      </form>
+    </base-card>
+  </div>
 </template>
 <script>
-
-import axios from 'axios';
-import {useGlobalStore} from "@/store/store.js";
+import axios from 'axios'
+import { useGlobalStore } from '@/store/store.js'
 
 export default {
   name: 'register',
-    data() {
-        return {
-          username: '',
-          email: '',
-          password: '',
-          role: null,
+  data() {
+    return {
+      username: '',
+      email: '',
+      password: '',
+      role: null,
+    }
+  },
+  methods: {
+    async postUser() {
+      const store = useGlobalStore()
+      try {
+        const response = await axios.post('http://localhost:4000/api/users', {
+          user: {
+            username: this.email.split('@')[0], // Ensure username is passed
+            email: this.email,
+            password: this.password,
+            role: this.role, // Convert role to lowercase
+          },
+        })
+
+        // Assuming the user object is in the response
+        const userID = response.data.user.id
+        store.setUserID(userID)
+
+        // Redirect to the chart manager page
+        this.$router.push('/chartmanager')
+      } catch (error) {
+        console.error('Error creating user:', error.response.data)
       }
     },
-    methods: {
-        async postUser() {
-          const store = useGlobalStore();
-          try {
-            const response = await axios.post("http://localhost:4000/api/users", {
-              user: {
-                username: this.email.split('@')[0], // Ensure username is passed
-                email: this.email,
-                password: this.password,
-                role: this.role.toLowerCase(), // Convert role to lowercase
-              },
-            });
-
-            // Assuming the user object is in the response
-            const userID = response.data.user.id;
-            store.setUserID(userID);
-
-            // Redirect to the chart manager page
-            this.$router.push("/chartmanager");
-          } catch (error) {
-            console.error("Error creating user:", error.response.data);
-          }
-
-        }
-    },
-    }
+  },
+}
 </script>
 <style scoped>
 option:disabled {
@@ -101,7 +101,7 @@ h2 {
 }
 
 label {
-    margin-right: 1em;
+  margin-right: 1em;
   margin-bottom: 5px;
   font-weight: bold;
 }
@@ -134,7 +134,6 @@ select {
 }
 
 .registerButton:hover {
-
   background-color: rgb(122, 89, 206);
   color: #000;
 }
@@ -152,7 +151,9 @@ select {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .signButton:hover {
