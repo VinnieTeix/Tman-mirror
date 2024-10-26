@@ -4,7 +4,7 @@ services:
       context: ./Batman
       dockerfile: Dockerfile
     ports:
-      - "8080:8080"
+      - "80:80"
     networks:
       - services-network
     depends_on:
@@ -53,4 +53,5 @@ volumes:
 
 networks:
   services-network:
-    external: true
+    name: services-network
+    driver: bridge
