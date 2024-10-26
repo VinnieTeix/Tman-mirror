@@ -16,17 +16,26 @@
   </div>
 </template>
 <script>
-import TheNavigation from '../../components/nav/TheNavigation.vue'
-import LineChart from '../../components/charts/line/LineChart.vue'
-import Button from '../../components/ui/Button.vue'
-import axios from 'axios'
 import { useGlobalStore } from '@/store/store.js'
+import { mapWritableState } from 'pinia'
+import TheNavigation from '@/components/nav/TheNavigation.vue'
+import LineChart from '@/components/charts/line/LineChart.vue'
+import Button from '@/components/ui/Button.vue'
+import axios from 'axios'
 
 export default {
   components: {
     TheNavigation,
     LineChart,
     Button,
+  },
+  computed: {
+    ...mapWritableState(useGlobalStore, ['userLoggedIn']),
+  },
+  created() {
+    if (!this.userLoggedIn) {
+      this.$router.push('/login')
+    }
   },
   setup() {
     const store = useGlobalStore()
