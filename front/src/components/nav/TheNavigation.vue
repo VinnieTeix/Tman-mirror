@@ -1,6 +1,7 @@
 <template>
   <header>
     <nav>
+      <h4 @click="logout" class="logout">Log out</h4>
       <ul>
         <li>
           <router-link to="/chartmanager">Chart Manager</router-link>
@@ -15,6 +16,20 @@
     </nav>
   </header>
 </template>
+<script>
+import { mapActions } from 'pinia'
+import { useGlobalStore } from '@/store/store.js'
+
+export default {
+  method: {
+    ...mapActions(useGlobalStore, ['logout']),
+
+    async logout() {
+      await this.logout()
+    },
+  },
+}
+</script>
 <style scoped>
 header {
   width: 100%;
@@ -24,6 +39,7 @@ header {
 
 nav {
   height: 100%;
+  display: flex;
 }
 
 ul {
@@ -34,6 +50,14 @@ ul {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+}
+
+.logout {
+  cursor: pointer;
+  margin-left: auto;
+  align-self: center;
+  margin: 2em;
 }
 
 li {

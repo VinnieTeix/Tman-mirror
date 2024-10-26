@@ -41,5 +41,8 @@ export const useGlobalStore = defineStore('global', {
       this.email = values.email
       this.role = values.role
     },
+    logout() {
+      this.userLoggedIn = false
+    },
   },
 })

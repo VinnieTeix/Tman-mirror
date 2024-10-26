@@ -5,8 +5,17 @@
       <h1>Clocks Page</h1>
       <base-card>
         <div class="column">
-          <div class="line">
-            <line-chart :line-data="pie" />
+          <div class="image">
+            <img
+              v-if="flag"
+              src="../../../public/assets/img/clock_grey.jpeg"
+              alt="grey"
+            />
+            <img
+              v-else
+              src="../../../public/assets/img/red_clock.jpg"
+              alt="grey"
+            />
           </div>
           <Button v-if="flag" @click="clockOut">Clock In</Button>
           <Button v-else @click="clockIn">Clock Out</Button>
@@ -107,12 +116,12 @@ h1 {
   color: #000;
   border-radius: 4%;
 }
-.line {
+.image {
   background-color: #fff;
   color: #000;
   border-radius: 5px;
-  width: 40%;
-  height: 60%;
+  max-width: 40%;
+  max-height: 60%;
   margin-bottom: 5%;
 }
 

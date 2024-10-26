@@ -18,6 +18,9 @@ export default {
     if (!this.userLoggedIn) {
       this.$router.push('/login')
     }
+    if (!this.role === 'admin' || !this.role === 'manager') {
+      this.$router.push('/clocks')
+    }
   },
   data: function () {
     return {

@@ -35,7 +35,10 @@ export default {
   },
   created() {
     if (!this.userLoggedIn) {
-      this.$router.push('/login')
+      this.$router.push('/auth')
+    }
+    if (!this.role === 'admin' || !this.role === 'manager') {
+      this.$router.push('/clocks')
     }
   },
   data() {
