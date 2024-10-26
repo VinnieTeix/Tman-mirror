@@ -1,51 +1,77 @@
 <template>
-    <div class="login-container">
-        <h1>Registration Page</h1>
-        <base-card>
-          <form @submit.prevent>
-              <div class="input-group">
-                  <input type="email" v-model="email" placeholder="email@email.com">
-              </div>
-              <div class="input-group">
-                  <input type="password" v-model="password" placeholder="********">
-              </div>
-                  <button type="submit" class="signButton" @click="postUser"> Register </button>
-          </form>
-        </base-card>
-    </div>
+  <div class="login-container">
+    <h1>Registration Page</h1>
+    <base-card>
+      <form @submit.prevent>
+        <div class="input-group">
+          <input type="email" v-model="email" placeholder="email@email.com" />
+        </div>
+        <div class="input-group">
+          <input type="password" v-model="password" placeholder="********" />
+        </div>
+        <div class="input-group">
+          <select v-model="role">
+            <option :value="null" selected disabled>Your role</option>
+            <option value="employee">Employee</option>
+            <option value="manager">Manager</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <button type="submit" class="signButton" @click="postUser">
+          Register
+        </button>
+      </form>
+    </base-card>
+  </div>
 </template>
 <script>
-
-import axios from 'axios';
-import {useGlobalStore} from "@/store/store.js";
+import axios from 'axios'
+import { useGlobalStore } from '@/store/store.js'
 
 export default {
   name: 'register',
-    data() {
-        return {
-        password: '',
-        email: ''
+  data() {
+    return {
+      username: '',
+      email: '',
+      password: '',
+      role: null,
+    }
+  },
+  methods: {
+    async postUser() {
+      const store = useGlobalStore()
+      try {
+        const response = await axios.post('http://localhost:4000/api/users', {
+          user: {
+            username: this.email.split('@')[0], // Ensure username is passed
+            email: this.email,
+            password: this.password,
+            role: this.role, // Convert role to lowercase
+          },
+        })
+        // Assuming the user object is in the response
+        const userID = response.data.user.id
+        store.setUserID(userID)
+        // Redirect to the chart manager page
+        this.$router.push('/chartmanager')
+      } catch (error) {
+        let missingFields = Object.keys(error.response.data.errors).length
+        alert(
+          `Error creating user : \n please complete the ${missingFields > 3 ? missingFields - 1 : missingFields} fields missing try again`,
+        )
+        console.log(Object.keys(error.response.data.errors).length)
+        console.log('Error creating user:', error.response.data)
       }
     },
-    methods: {
-      postUser() {
-        const store = useGlobalStore();
-        console.log("Method called")
-        axios.post("http://localhost:4000/api/users", {
-            user: {
-              username: this.username,
-              email: this.email,
-              password: this.password
-            }
-        })
-        store.setUserID(this.user.username);
-            console.log(this.username, this.email, this.password)
-            this.$router.push('/chartmanager')
-        }
-    },
-    }
+  },
+}
 </script>
 <style scoped>
+option:disabled {
+  color: #9ca3af;
+}
+
 h1 {
   font-size: 2.5em;
   margin-bottom: 20px;
@@ -78,7 +104,7 @@ h2 {
 }
 
 label {
-    margin-right: 1em;
+  margin-right: 1em;
   margin-bottom: 5px;
   font-weight: bold;
 }
@@ -90,22 +116,25 @@ input {
   width: 100%;
 }
 
+select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
 .signButton {
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background-color: #007bff;
   color: white;
   font-size: 15px;
   border: none;
-  border-radius: 4px;
   width: 100%;
   cursor: pointer;
 }
 
 .registerButton:hover {
-
   background-color: rgb(122, 89, 206);
   color: #000;
 }
@@ -123,7 +152,9 @@ input {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .signButton:hover {

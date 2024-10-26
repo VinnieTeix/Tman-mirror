@@ -35,6 +35,16 @@ body {
   padding: 0;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
 h4 {
   padding: 0.25px;
 }

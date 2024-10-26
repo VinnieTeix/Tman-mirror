@@ -1,6 +1,6 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import { createPinia } from 'pinia';
+import { createPinia } from 'pinia'
 import App from './App.vue'
 import NotFound from './pages/NotFound.vue'
 import TheHome from './pages/home/TheHome.vue'
@@ -11,6 +11,9 @@ import TheClocks from './pages/clocks/TheClocks.vue'
 import ChartManager from './pages/chartmanager/ChartManager.vue'
 import TheWorkingtime from './pages/workingtimes/TheWorkingtime.vue'
 import UserRegistration from './pages/auth/register/UserRegistration.vue'
+import { registerSW } from 'virtual:pwa-register'
+
+registerSW({ immediate: true }) // load and register the service worker immediately
 
 const router = createRouter({
   history: createWebHistory(),
@@ -27,9 +30,9 @@ const router = createRouter({
 })
 
 const app = createApp(App)
-const pinia = createPinia();
+const pinia = createPinia()
 
-app.use(pinia);
+app.use(pinia)
 app.use(router)
 app.component('base-card', BaseCard)
 

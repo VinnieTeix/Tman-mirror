@@ -20,7 +20,6 @@ header {
   width: 100%;
   height: 5rem;
   background-image: linear-gradient(#222, #222);
-  justify-self: center;
 }
 
 nav {

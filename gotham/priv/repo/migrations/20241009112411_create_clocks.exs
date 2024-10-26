@@ -6,7 +6,6 @@ defmodule Tman.Repo.Migrations.CreateClocks do
       add :time, :naive_datetime
       add :status, :boolean, default: false, null: false
       add :user, references(:users, on_delete: :nothing)
-
       timestamps(type: :utc_datetime)
     end
 

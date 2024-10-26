@@ -12,7 +12,7 @@ config :gothapp, TmanWeb.Endpoint,
        show_sensitive_data_on_connection_error: true,
        cors_plug: [
         origin: "*",
-         methods: ["GET", "PATCH", "POST", "DELETE", "OPTIONS"]
+        methods: ["GET", "PATCH", "POST", "DELETE", "OPTIONS"]
        ]
 
 config :gothapp, Tman.Repo,

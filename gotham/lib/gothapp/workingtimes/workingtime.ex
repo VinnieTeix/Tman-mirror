@@ -5,7 +5,7 @@ defmodule Tman.Workingtimes.Workingtime do
   schema "workingtimes" do
     field :start, :naive_datetime
     field :end, :naive_datetime
-    field :user, :id
+    belongs_to :user, TimeManager.Users.User
 
     timestamps(type: :utc_datetime)
   end
