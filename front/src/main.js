@@ -11,6 +11,9 @@ import TheClocks from './pages/clocks/TheClocks.vue'
 import ChartManager from './pages/chartmanager/ChartManager.vue'
 import TheWorkingtime from './pages/workingtimes/TheWorkingtime.vue'
 import UserRegistration from './pages/auth/register/UserRegistration.vue'
+import { registerSW } from 'virtual:pwa-register'
+
+registerSW({ immediate: true }) // load and register the service worker immediately
 
 const router = createRouter({
   history: createWebHistory(),
