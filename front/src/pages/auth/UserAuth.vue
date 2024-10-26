@@ -111,11 +111,9 @@ input {
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background-color: #007bff;
   color: white;
   font-size: 15px;
   border: none;
-  border-radius: 4px;
   cursor: pointer;
 }
 
@@ -129,6 +127,8 @@ input {
   justify-content: center;
   align-items: center;
   text-decoration: none;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
   padding: 10px;
   margin-top: 1em;
   background-color: #542ded; /* Primary color */

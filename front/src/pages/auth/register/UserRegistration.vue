@@ -50,15 +50,18 @@ export default {
             role: this.role, // Convert role to lowercase
           },
         })
-
         // Assuming the user object is in the response
         const userID = response.data.user.id
         store.setUserID(userID)
-
         // Redirect to the chart manager page
         this.$router.push('/chartmanager')
       } catch (error) {
-        console.error('Error creating user:', error.response.data)
+        let missingFields = Object.keys(error.response.data.errors).length
+        alert(
+          `Error creating user : \n please complete the ${missingFields > 3 ? missingFields - 1 : missingFields} fields missing try again`,
+        )
+        console.log(Object.keys(error.response.data.errors).length)
+        console.log('Error creating user:', error.response.data)
       }
     },
   },
@@ -124,11 +127,9 @@ select {
   justify-content: center;
   align-items: center;
   padding: 10px;
-  background-color: #007bff;
   color: white;
   font-size: 15px;
   border: none;
-  border-radius: 4px;
   width: 100%;
   cursor: pointer;
 }
