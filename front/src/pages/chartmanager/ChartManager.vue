@@ -15,10 +15,12 @@
   </div>
 </template>
 <script>
-import TheNavigation from '../../components/nav/TheNavigation.vue'
-import BarChart from '../../components/charts/bar/BarChart.vue'
-import PieChart from '../../components/charts/pie/PieChart.vue'
-import LineChart from '../../components/charts/line/LineChart.vue'
+import { mapWritableState } from 'pinia'
+import { useGlobalStore } from '@/store/store.js'
+import TheNavigation from '@/components/nav/TheNavigation.vue'
+import BarChart from '@/components/charts/bar/BarChart.vue'
+import PieChart from '@/components/charts/pie/PieChart.vue'
+import LineChart from '@/components/charts/line/LineChart.vue'
 
 export default {
   name: 'main',
@@ -27,6 +29,17 @@ export default {
     'bar-chart': BarChart,
     'pie-chart': PieChart,
     'line-chart': LineChart,
+  },
+  computed: {
+    ...mapWritableState(useGlobalStore, ['userLoggedIn']),
+  },
+  created() {
+    if (!this.userLoggedIn) {
+      this.$router.push('/auth')
+    }
+    if (!this.role === 'admin' || !this.role === 'manager') {
+      this.$router.push('/clocks')
+    }
   },
   data() {
     return {

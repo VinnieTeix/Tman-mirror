@@ -4,12 +4,20 @@
     <base-card>
       <form @submit.prevent="loginUser">
         <div class="input-group">
-          <input type="email" v-model="email" placeholder="email@email.com" />
+          <input
+            type="email"
+            v-model="user.email"
+            placeholder="email@email.com"
+          />
         </div>
         <div class="input-group">
-          <input type="password" v-model="password" placeholder="*********" />
+          <input
+            type="password"
+            v-model="user.password"
+            placeholder="*********"
+          />
         </div>
-        <button class="signButton" type="submit" @click="loginUser.prevent">
+        <button class="signButton" type="submit" @click="loginUser">
           Login
         </button>
         <router-link class="registerButton" to="/register"
@@ -22,15 +30,17 @@
 <script>
 import axios from 'axios'
 import 'css-doodle'
+import { mapActions } from 'pinia'
 import { useGlobalStore } from '@/store/store.js'
 
 export default {
   name: 'auth',
   data() {
     return {
-      email: '',
-      password: '',
-      users: null,
+      user: {
+        password: '',
+        email: '',
+      },
     }
   },
   mounted() {
@@ -43,20 +53,21 @@ export default {
   },
 
   methods: {
-    loginUser() {
-      const store = useGlobalStore()
-      const username = this.email.split('@')[0]
-      if (
-        this.users &&
-        this.users.some(
-          user => user.email === this.email && user.password === this.password,
-        )
-      ) {
-        console.log(username + 'found in users array')
-        store.setUserID(this.users[0].id)
-        this.$router.push('/chartmanager')
-      } else {
-        console.log('Email not found in users array')
+    ...mapActions(useGlobalStore, { createUser: 'authenticate' }),
+
+    async loginUser() {
+      const user = this.users.find(
+        user =>
+          user.email === this.user.email &&
+          user.password === this.user.password,
+      )
+      try {
+        // console.log(user)
+        await this.createUser(user)
+        this.$router.push('/chartmanager') // Redirect to a protected route
+      } catch (error) {
+        console.log(error)
+        return
       }
     },
   },

@@ -4,13 +4,21 @@
     <base-card>
       <form @submit.prevent>
         <div class="input-group">
-          <input type="email" v-model="email" placeholder="email@email.com" />
+          <input
+            type="email"
+            v-model="user.email"
+            placeholder="email@email.com"
+          />
         </div>
         <div class="input-group">
-          <input type="password" v-model="password" placeholder="********" />
+          <input
+            type="password"
+            v-model="user.password"
+            placeholder="********"
+          />
         </div>
         <div class="input-group">
-          <select v-model="role">
+          <select v-model="user.role">
             <option :value="null" selected disabled>Your role</option>
             <option value="employee">Employee</option>
             <option value="manager">Manager</option>
@@ -25,43 +33,32 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+import { mapActions } from 'pinia'
 import { useGlobalStore } from '@/store/store.js'
 
 export default {
   name: 'register',
+
   data() {
     return {
-      username: '',
-      email: '',
-      password: '',
-      role: null,
+      user: {
+        username: '',
+        email: '',
+        password: '',
+        role: null,
+      },
     }
   },
   methods: {
+    ...mapActions(useGlobalStore, { createUser: 'register' }),
+
     async postUser() {
-      const store = useGlobalStore()
       try {
-        const response = await axios.post('http://localhost:4000/api/users', {
-          user: {
-            username: this.email.split('@')[0], // Ensure username is passed
-            email: this.email,
-            password: this.password,
-            role: this.role, // Convert role to lowercase
-          },
-        })
-        // Assuming the user object is in the response
-        const userID = response.data.user.id
-        store.setUserID(userID)
-        // Redirect to the chart manager page
+        await this.createUser(this.user) // Call the createUser action
         this.$router.push('/chartmanager')
+        // console.log('here')
       } catch (error) {
-        let missingFields = Object.keys(error.response.data.errors).length
-        alert(
-          `Error creating user : \n please complete the ${missingFields > 3 ? missingFields - 1 : missingFields} fields missing try again`,
-        )
-        console.log(Object.keys(error.response.data.errors).length)
-        console.log('Error creating user:', error.response.data)
+        console.log(error)
       }
     },
   },

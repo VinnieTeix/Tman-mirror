@@ -5,8 +5,14 @@
 </template>
 
 <script>
+import { mapWritableState } from 'pinia'
+import { useGlobalStore } from '@/store/store.js'
+
 export default {
   name: 'app',
+  computed: {
+    ...mapWritableState(useGlobalStore, ['userLoggedIn']),
+  },
 }
 </script>
 
