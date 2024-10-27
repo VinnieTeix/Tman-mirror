@@ -4,12 +4,15 @@
       <h4 @click="logout" class="logout">Log out</h4>
       <ul>
         <li>
+          <router-link to="/user">Profile</router-link>
+        </li>
+        <li v-if="granted">
           <router-link to="/chartmanager">Chart Manager</router-link>
         </li>
         <li>
           <router-link to="/clocks">Clocks</router-link>
         </li>
-        <li>
+        <li v-if="granted">
           <router-link to="/Workingtimes">WorkingTimes</router-link>
         </li>
       </ul>
@@ -17,16 +20,14 @@
   </header>
 </template>
 <script>
-import { mapActions } from 'pinia'
 import { useGlobalStore } from '@/store/store.js'
 
 export default {
-  method: {
-    ...mapActions(useGlobalStore, ['logout']),
-
-    async logout() {
-      await this.logout()
-    },
+  setup() {
+    const store = useGlobalStore()
+    return {
+      granted: store.granted,
+    }
   },
 }
 </script>
@@ -57,7 +58,7 @@ ul {
   cursor: pointer;
   margin-left: auto;
   align-self: center;
-  margin: 2em;
+  margin: 2rem;
 }
 
 li {
@@ -80,6 +81,7 @@ a {
   }
   nav {
     display: flex;
+    flex-direction: column;
     justify-content: center;
   }
   li {

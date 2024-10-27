@@ -6,6 +6,7 @@ export const useGlobalStore = defineStore('global', {
     userID: '',
     email: '',
     username: '',
+    granted: false,
     userLoggedIn: false,
     role: '',
   }),
@@ -32,14 +33,19 @@ export const useGlobalStore = defineStore('global', {
       this.username = values.email.split('@')[0]
       this.email = values.email
       this.role = values.role
+      this.role == 'manager' || this.role == 'admin'
+        ? (this.granted = true)
+        : (this.granted = false)
     },
     async authenticate(values) {
-      console.log(values)
       this.userID = values.id
       this.userLoggedIn = true
       this.username = values.username
       this.email = values.email
       this.role = values.role
+      this.role == 'manager' || this.role == 'admin'
+        ? (this.granted = true)
+        : (this.granted = false)
     },
     logout() {
       this.userLoggedIn = false

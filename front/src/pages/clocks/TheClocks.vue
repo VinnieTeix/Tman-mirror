@@ -8,12 +8,12 @@
           <div class="image">
             <img
               v-if="flag"
-              src="../../../public/assets/img/clock_grey.jpeg"
+              src="@/assets/img/clock_grey.jpeg"
               alt="grey"
             />
             <img
               v-else
-              src="../../../public/assets/img/red_clock.jpg"
+              src="@/assets/img/red_clock.jpg"
               alt="grey"
             />
           </div>
@@ -28,14 +28,12 @@
 import { useGlobalStore } from '@/store/store.js'
 import { mapWritableState } from 'pinia'
 import TheNavigation from '@/components/nav/TheNavigation.vue'
-import LineChart from '@/components/charts/line/LineChart.vue'
 import Button from '@/components/ui/Button.vue'
 import axios from 'axios'
 
 export default {
   components: {
     TheNavigation,
-    LineChart,
     Button,
   },
   computed: {
@@ -110,11 +108,6 @@ h1 {
 }
 .card {
   width: 140%;
-}
-.chart {
-  background: #fff;
-  color: #000;
-  border-radius: 4%;
 }
 .image {
   background-color: #fff;

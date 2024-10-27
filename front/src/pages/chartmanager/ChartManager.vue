@@ -31,14 +31,11 @@ export default {
     'line-chart': LineChart,
   },
   computed: {
-    ...mapWritableState(useGlobalStore, ['userLoggedIn']),
+    ...mapWritableState(useGlobalStore, ['userLoggedIn', 'granted']),
   },
   created() {
     if (!this.userLoggedIn) {
       this.$router.push('/auth')
-    }
-    if (!this.role === 'admin' || !this.role === 'manager') {
-      this.$router.push('/clocks')
     }
   },
   data() {
@@ -86,7 +83,7 @@ export default {
         datasets: [
           {
             backgroundColor: ['#c82834', '#244771'],
-            data: [7.3, 7.3, 6.2, 6.9, 6.6, 7.4, 7.5, 8.0, 8.4, 8.92],
+            data: [140, 160, 138, 120, 142, 141, 108, 172, 123, 153],
           },
         ],
       },

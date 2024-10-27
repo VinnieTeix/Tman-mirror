@@ -55,7 +55,7 @@ export default {
     async postUser() {
       try {
         await this.createUser(this.user) // Call the createUser action
-        this.$router.push('/chartmanager')
+        this.$router.push('/clocks')
         // console.log('here')
       } catch (error) {
         console.log(error)

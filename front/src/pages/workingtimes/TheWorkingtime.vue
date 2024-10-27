@@ -12,14 +12,11 @@ export default {
     FullCalendar, // make the <FullCalendar> tag available
   },
   computed: {
-    ...mapWritableState(useGlobalStore, ['userLoggedIn']),
+    ...mapWritableState(useGlobalStore, ['userLoggedIn', 'granted']),
   },
   created() {
     if (!this.userLoggedIn) {
       this.$router.push('/login')
-    }
-    if (!this.role === 'admin' || !this.role === 'manager') {
-      this.$router.push('/clocks')
     }
   },
   data: function () {

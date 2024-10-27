@@ -53,7 +53,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(useGlobalStore, { createUser: 'authenticate' }),
+    ...mapActions(useGlobalStore, { auth: 'authenticate' }),
 
     async loginUser() {
       const user = this.users.find(
@@ -63,8 +63,8 @@ export default {
       )
       try {
         // console.log(user)
-        await this.createUser(user)
-        this.$router.push('/chartmanager') // Redirect to a protected route
+        await this.auth(user)
+        this.$router.push('/clocks') // Redirect to a protected route
       } catch (error) {
         console.log(error)
         return
