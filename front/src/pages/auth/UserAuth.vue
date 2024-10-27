@@ -17,9 +17,7 @@
             placeholder="*********"
           />
         </div>
-        <button class="signButton" type="submit" @click="loginUser">
-          Login
-        </button>
+        <button class="signButton" type="submit">Login</button>
         <router-link class="registerButton" to="/register"
           >Register</router-link
         >
@@ -62,11 +60,12 @@ export default {
           user.password === this.user.password,
       )
       try {
-        // console.log(user)
+        console.log('Authenticating user:', user)
         await this.auth(user)
+        console.log('User authenticated successfully')
         this.$router.push('/clocks') // Redirect to a protected route
       } catch (error) {
-        console.log(error)
+        console.log('Authentication failed:', error)
         return
       }
     },

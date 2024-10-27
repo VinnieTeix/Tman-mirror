@@ -2,12 +2,21 @@
 import { useGlobalStore } from '@/store/store.js'
 import TheNavigation from '@/components/nav/TheNavigation.vue'
 import LineChart from '../../components/charts/line/LineChart.vue'
+import { mapWritableState } from 'pinia'
 
 export default {
   // test@test.com
   components: {
     TheNavigation,
     LineChart,
+  },
+  computed: {
+    ...mapWritableState(useGlobalStore, ['userLoggedIn']),
+  },
+  created() {
+    if (!this.userLoggedIn) {
+      this.$router.push('/login')
+    }
   },
   setup() {
     const store = useGlobalStore()

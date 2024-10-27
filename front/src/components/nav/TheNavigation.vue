@@ -21,13 +21,25 @@
 </template>
 <script>
 import { useGlobalStore } from '@/store/store.js'
+import { mapActions } from 'pinia'
 
 export default {
-  setup() {
+  data() {
     const store = useGlobalStore()
     return {
       granted: store.granted,
     }
+  },
+  methods: {
+    ...mapActions(useGlobalStore, { disconnect: 'logout' }),
+    async logout() {
+      await this.disconnect()
+      this.$router.push('/login')
+    },
+    created() {
+      const store = useGlobalStore()
+      store.initAuth()
+    },
   },
 }
 </script>
