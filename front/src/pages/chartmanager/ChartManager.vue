@@ -15,10 +15,12 @@
   </div>
 </template>
 <script>
-import TheNavigation from '../../components/nav/TheNavigation.vue'
-import BarChart from '../../components/charts/bar/BarChart.vue'
-import PieChart from '../../components/charts/pie/PieChart.vue'
-import LineChart from '../../components/charts/line/LineChart.vue'
+import { mapWritableState } from 'pinia'
+import { useGlobalStore } from '@/store/store.js'
+import TheNavigation from '@/components/nav/TheNavigation.vue'
+import BarChart from '@/components/charts/bar/BarChart.vue'
+import PieChart from '@/components/charts/pie/PieChart.vue'
+import LineChart from '@/components/charts/line/LineChart.vue'
 
 export default {
   name: 'main',
@@ -27,6 +29,17 @@ export default {
     'bar-chart': BarChart,
     'pie-chart': PieChart,
     'line-chart': LineChart,
+  },
+  computed: {
+    ...mapWritableState(useGlobalStore, ['userLoggedIn', 'granted']),
+  },
+  created() {
+    if (!this.userLoggedIn) {
+      this.$router.push('/login')
+    }
+    if (!this.granted) {
+      this.$router.push('/clocks')
+    }
   },
   data() {
     return {
@@ -73,7 +86,7 @@ export default {
         datasets: [
           {
             backgroundColor: ['#c82834', '#244771'],
-            data: [7.3, 7.3, 6.2, 6.9, 6.6, 7.4, 7.5, 8.0, 8.4, 8.92],
+            data: [140, 160, 138, 120, 142, 141, 108, 172, 123, 153],
           },
         ],
       },

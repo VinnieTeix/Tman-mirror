@@ -4,14 +4,20 @@
     <base-card>
       <form @submit.prevent="loginUser">
         <div class="input-group">
-          <input type="email" v-model="email" placeholder="email@email.com" />
+          <input
+            type="email"
+            v-model="user.email"
+            placeholder="email@email.com"
+          />
         </div>
         <div class="input-group">
-          <input type="password" v-model="password" placeholder="*********" />
+          <input
+            type="password"
+            v-model="user.password"
+            placeholder="*********"
+          />
         </div>
-        <button class="signButton" type="submit" @click="loginUser.prevent">
-          Login
-        </button>
+        <button class="signButton" type="submit">Login</button>
         <router-link class="registerButton" to="/register"
           >Register</router-link
         >
@@ -22,15 +28,17 @@
 <script>
 import axios from 'axios'
 import 'css-doodle'
+import { mapActions } from 'pinia'
 import { useGlobalStore } from '@/store/store.js'
 
 export default {
   name: 'auth',
   data() {
     return {
-      email: '',
-      password: '',
-      users: null,
+      user: {
+        password: '',
+        email: '',
+      },
     }
   },
   mounted() {
@@ -43,20 +51,22 @@ export default {
   },
 
   methods: {
-    loginUser() {
-      const store = useGlobalStore()
-      const username = this.email.split('@')[0]
-      if (
-        this.users &&
-        this.users.some(
-          user => user.email === this.email && user.password === this.password,
-        )
-      ) {
-        console.log(username + 'found in users array')
-        store.setUserID(this.users[0].id)
-        this.$router.push('/chartmanager')
-      } else {
-        console.log('Email not found in users array')
+    ...mapActions(useGlobalStore, { auth: 'authenticate' }),
+
+    async loginUser() {
+      const user = this.users.find(
+        user =>
+          user.email === this.user.email &&
+          user.password === this.user.password,
+      )
+      try {
+        console.log('Authenticating user:', user)
+        await this.auth(user)
+        console.log('User authenticated successfully')
+        this.$router.push('/clocks') // Redirect to a protected route
+      } catch (error) {
+        console.log('Authentication failed:', error)
+        return
       }
     },
   },

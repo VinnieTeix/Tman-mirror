@@ -1,20 +1,48 @@
 <template>
   <header>
     <nav>
+      <h4 @click="logout" class="logout">Log out</h4>
       <ul>
         <li>
+          <router-link to="/user">Profile</router-link>
+        </li>
+        <li v-if="granted">
           <router-link to="/chartmanager">Chart Manager</router-link>
         </li>
         <li>
           <router-link to="/clocks">Clocks</router-link>
         </li>
-        <li>
+        <li v-if="granted">
           <router-link to="/Workingtimes">WorkingTimes</router-link>
         </li>
       </ul>
     </nav>
   </header>
 </template>
+<script>
+import { useGlobalStore } from '@/store/store.js'
+import { mapActions } from 'pinia'
+
+export default {
+  data() {
+    const store = useGlobalStore()
+    return {
+      granted: store.granted,
+    }
+  },
+  methods: {
+    ...mapActions(useGlobalStore, { disconnect: 'logout' }),
+    async logout() {
+      await this.disconnect()
+      this.$router.push('/login')
+    },
+    created() {
+      const store = useGlobalStore()
+      store.initAuth()
+    },
+  },
+}
+</script>
 <style scoped>
 header {
   width: 100%;
@@ -24,6 +52,7 @@ header {
 
 nav {
   height: 100%;
+  display: flex;
 }
 
 ul {
@@ -34,6 +63,14 @@ ul {
   display: flex;
   justify-content: center;
   align-items: center;
+  width: 100%;
+}
+
+.logout {
+  cursor: pointer;
+  margin-left: auto;
+  align-self: center;
+  margin: 2rem;
 }
 
 li {
@@ -56,6 +93,7 @@ a {
   }
   nav {
     display: flex;
+    flex-direction: column;
     justify-content: center;
   }
   li {

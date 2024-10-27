@@ -1,4 +1,6 @@
 <script>
+import { useGlobalStore } from '@/store/store.js'
+import { mapWritableState } from 'pinia'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
@@ -7,9 +9,19 @@ import TheNavigation from '@/components/nav/TheNavigation.vue'
 export default {
   components: {
     TheNavigation,
-    FullCalendar, // make the <FullCalendar> tag available
+    FullCalendar,
   },
-
+  computed: {
+    ...mapWritableState(useGlobalStore, ['userLoggedIn', 'granted']),
+  },
+  created() {
+    if (!this.userLoggedIn) {
+      this.$router.push('/login')
+    }
+    if (!this.granted) {
+      this.$router.push('/clocks')
+    }
+  },
   data: function () {
     return {
       calendarOptions: {
