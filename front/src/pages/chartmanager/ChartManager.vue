@@ -35,7 +35,10 @@ export default {
   },
   created() {
     if (!this.userLoggedIn) {
-      this.$router.push('/auth')
+      this.$router.push('/login')
+    }
+    if (!this.granted) {
+      this.$router.push('/clocks')
     }
   },
   data() {

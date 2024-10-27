@@ -7,10 +7,20 @@ export const useGlobalStore = defineStore('global', {
     email: '',
     username: '',
     granted: false,
-    userLoggedIn: false,
+    userLoggedIn: JSON.parse(localStorage.getItem('userLoggedIn')) || false,
     role: '',
   }),
   actions: {
+    setUserLoggedIn(status) {
+      this.userLoggedIn = status
+      localStorage.setItem('userLoggedIn', JSON.stringify(status))
+    },
+    initAuth() {
+      const storedStatus = JSON.parse(localStorage.getItem('userLoggedIn'))
+      if (storedStatus !== null) {
+        this.userLoggedIn = storedStatus
+      }
+    },
     setUserID(newUserID) {
       this.userID = newUserID
     },
@@ -19,8 +29,8 @@ export const useGlobalStore = defineStore('global', {
       console.log(response.data)
     },
     async register(values) {
-      await axios
-        .post('http://localhost:4000/api/users', {
+      try {
+        const response = await axios.post('http://localhost:4000/api/users', {
           user: {
             username: values.email.split('@')[0], // Ensure username is passed
             email: values.email,
@@ -28,27 +38,36 @@ export const useGlobalStore = defineStore('global', {
             role: values.role, // Convert role to lowercase
           },
         })
-        .then(res => (this.userID = res.data.data.id))
-      this.userLoggedIn = true
-      this.username = values.email.split('@')[0]
-      this.email = values.email
-      this.role = values.role
-      this.role == 'manager' || this.role == 'admin'
-        ? (this.granted = true)
-        : (this.granted = false)
+
+        const userData = response.data.data
+        this.userID = userData.id
+        this.username = values.email.split('@')[0]
+        this.setUserLoggedIn(true)
+        this.email = values.email
+        this.role = values.role
+        this.role == 'manager' || this.role == 'admin'
+          ? (this.granted = true)
+          : (this.granted = false)
+        this.initAuth()
+        localStorage.setItem('userLoggedIn', JSON.stringify(true))
+      } catch (err) {
+        console.log(err)
+      }
     },
     async authenticate(values) {
+      localStorage.setItem('userLoggedIn', JSON.stringify(true))
       this.userID = values.id
-      this.userLoggedIn = true
       this.username = values.username
       this.email = values.email
       this.role = values.role
       this.role == 'manager' || this.role == 'admin'
         ? (this.granted = true)
         : (this.granted = false)
+      console.log(values)
     },
     logout() {
-      this.userLoggedIn = false
+      localStorage.removeItem('userLoggedIn') // Remove userLoggedIn from localStorage
+      this.setUserLoggedIn(false) // Set userLoggedIn to false
     },
   },
 })

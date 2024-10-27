@@ -6,16 +6,8 @@
       <base-card>
         <div class="column">
           <div class="image">
-            <img
-              v-if="flag"
-              src="@/assets/img/clock_grey.jpeg"
-              alt="grey"
-            />
-            <img
-              v-else
-              src="@/assets/img/red_clock.jpg"
-              alt="grey"
-            />
+            <img v-if="flag" src="@/assets/img/clock_grey.jpeg" alt="grey" />
+            <img v-else src="@/assets/img/red_clock.jpg" alt="grey" />
           </div>
           <Button v-if="flag" @click="clockOut">Clock In</Button>
           <Button v-else @click="clockIn">Clock Out</Button>
@@ -40,6 +32,8 @@ export default {
     ...mapWritableState(useGlobalStore, ['userLoggedIn']),
   },
   created() {
+    const store = useGlobalStore()
+    store.initAuth()
     if (!this.userLoggedIn) {
       this.$router.push('/login')
     }

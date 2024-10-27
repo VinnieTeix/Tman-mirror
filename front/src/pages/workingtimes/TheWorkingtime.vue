@@ -9,7 +9,7 @@ import TheNavigation from '@/components/nav/TheNavigation.vue'
 export default {
   components: {
     TheNavigation,
-    FullCalendar, // make the <FullCalendar> tag available
+    FullCalendar,
   },
   computed: {
     ...mapWritableState(useGlobalStore, ['userLoggedIn', 'granted']),
@@ -17,6 +17,9 @@ export default {
   created() {
     if (!this.userLoggedIn) {
       this.$router.push('/login')
+    }
+    if (!this.granted) {
+      this.$router.push('/clocks')
     }
   },
   data: function () {
