@@ -10,6 +10,8 @@ export const useGlobalStore = defineStore('global', {
     userLoggedIn: JSON.parse(localStorage.getItem('userLoggedIn')) || false,
     role: '',
     users: [],
+    apiHost: import.meta.env.VITE_PHX_HOST
+
   }),
   actions: {
     setUserLoggedIn(status) {
@@ -24,7 +26,7 @@ export const useGlobalStore = defineStore('global', {
     },
     async fetchUsers() {
       // Fetch users from the server and map user IDs to usernames
-      const response = await axios.get('http://localhost:4000/api/users'); // Adjust the endpoint accordingly
+      const response = await axios.get(`http://${this.apiHost}:4000/api/users`); // Adjust the endpoint accordingly
       const usersData = response.data.data; // Assuming this returns an array of users
 
       // Create a mapping of user IDs to usernames
@@ -44,7 +46,7 @@ export const useGlobalStore = defineStore('global', {
     async getWorkingtimes() {
       try {
         // Fetch data from the API
-        const response = await axios.get(`http://localhost:4000/api/clocks/${this.userID}`);
+        const response = await axios.get(`http://${this.apiHost}:4000/api/clocks/${this.userID}`);
         const clocks = response.data.data;
         console.log(response);
 
@@ -86,7 +88,7 @@ export const useGlobalStore = defineStore('global', {
 
     async register(values) {
       try {
-        const response = await axios.post('http://localhost:4000/api/users', {
+        const response = await axios.post(`http://${this.apiHost}:4000/api/users`, {
           user: {
             username: values.email.split('@')[0], // Ensure username is passed
             email: values.email,
