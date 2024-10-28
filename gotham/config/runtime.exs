@@ -52,7 +52,7 @@ if config_env() == :prod do
       environment variable PGDATABASE is missing.
       """
 
-  host = "localhost"
+  host = "db"
   config :gothapp, Tman.Repo,
     # ssl: true,
     url: database_url,

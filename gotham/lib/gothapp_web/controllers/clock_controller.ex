@@ -7,19 +7,15 @@
     action_fallback TmanWeb.FallbackController
 
     def index(conn, _params) do
-      clocks = Clocks.list_clocks() |> Repo.preload(:user)
+      clocks = Clocks.list_clocks()
       render(conn, :index, clocks: clocks)
     end
 
     def create(conn, %{"clock" => clock_params}) do
-      user_id = conn.assigns[:current_user_id]  # Example of how you might get the user id
-
-      clock_params_with_user = Map.put(clock_params, "user_id", user_id)
-
-      with {:ok, %Clock{} = clock} <- Clocks.create_clock(clock_params_with_user) do
+      with {:ok, %Clock{} = clock} <- Clocks.create_clock(clock_params) do
         conn
         |> put_status(:created)
-        |> put_resp_header("location", Routes.clock_path(conn, :show, clock))
+        |> put_resp_header("location", ~p"/api/clocks/#{clock}")
         |> render(:show, clock: clock)
         end
     end

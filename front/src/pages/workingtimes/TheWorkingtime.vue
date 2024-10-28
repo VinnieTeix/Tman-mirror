@@ -1,12 +1,13 @@
 <script>
 import { useGlobalStore } from '@/store/store.js'
-import { mapWritableState } from 'pinia'
+import {mapActions, mapWritableState} from 'pinia'
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import TheNavigation from '@/components/nav/TheNavigation.vue'
 
 export default {
+  name: 'workingtimes',
   components: {
     TheNavigation,
     FullCalendar,
@@ -15,76 +16,47 @@ export default {
     ...mapWritableState(useGlobalStore, ['userLoggedIn', 'granted']),
   },
   created() {
+    const store = useGlobalStore()
+    store.getWorkingtimes()
     if (!this.userLoggedIn) {
       this.$router.push('/login')
     }
     if (!this.granted) {
       this.$router.push('/clocks')
     }
+    store.fetchUsers() // Fetch users when the component is created
+      .then(() => {
+        this.fetchAndSetEvents(); // Fetch events after users are fetched
+      });
   },
   data: function () {
     return {
+      calendarEvents: [], // Array to hold FullCalendar events
       calendarOptions: {
-        plugins: [
-          dayGridPlugin,
-          interactionPlugin, // needed for dateClick
-        ],
-        headerToolbar: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'dayGridMonth,timeGridWeek,timeGridDay',
-        },
-        initialView: 'dayGridMonth', // alternatively, use the `events` setting to fetch from a feed
-        editable: true,
-        selectable: true,
-        selectMirror: true,
-        dayMaxEvents: true,
-        weekends: true,
-        select: this.handleDateSelect,
-        eventClick: this.handleEventClick,
-        eventsSet: this.handleEvents,
-        /* you can update a remote database when these fire:
-        eventAdd:
-        eventChange:
-        eventRemove:
-        */
+        plugins: [dayGridPlugin, interactionPlugin],
+        initialView: 'dayGridWeek',
+        events: this.calendarEvents,
       },
       currentEvents: [],
     }
   },
 
   methods: {
+      ...mapActions(useGlobalStore, { workingtimes: 'getWorkingtimes' }),
+
     handleWeekendsToggle() {
       this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
     },
+    async fetchAndSetEvents() {
+      const store = useGlobalStore(); // Get the store instance
+      const workingTimes = await store.getWorkingtimes();
 
-    handleDateSelect(selectInfo) {
-      let title = prompt('Please enter a new title for your event')
-      let calendarApi = selectInfo.view.calendar
-
-      calendarApi.unselect() // clear date selection
-
-      if (title) {
-        calendarApi.addEvent({
-          start: selectInfo.startStr,
-          end: selectInfo.endStr,
-          allDay: selectInfo.allDay,
-        })
-      }
-    },
-
-    handleEventClick(clickInfo) {
-      if (
-        confirm(
-          `Are you sure you want to delete the event '${clickInfo.event.title}'`,
-        )
-      ) {
-        clickInfo.event.remove()
-      }
-    },
-
-    handleEvents(events) {
-      this.currentEvents = events
+      this.calendarEvents = workingTimes.map(entry => ({
+        title: `${store.users[entry.user_id]}'s shift`, // Set title based on user ID
+        start: new Date(entry.start).toISOString(),
+        end: new Date(entry.end).toISOString(),
+      }));
+      this.calendarOptions = { ...this.calendarOptions, events: this.calendarEvents };
     },
   },
 }

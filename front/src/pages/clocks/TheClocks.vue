@@ -61,23 +61,32 @@ export default {
   },
   methods: {
     clockIn() {
-      axios.post('http://localhost:4000/api/clocks/:userID', {
+      axios.post(`http://localhost:4000/api/clocks/${this.userID}`, {
         clock: {
           status: true,
           time: new Date(),
-          user: this.userID,
+          user_id: this.userID.toString(),
         },
       })
       console.log(this.userID)
       this.flag = !this.flag
     },
     clockOut() {
-      axios.post('http://localhost:4000/api/clocks/:userID', {
+      axios.post(`http://localhost:4000/api/clocks/${this.userID}`, {
         clock: {
           status: false,
           time: new Date(),
-          user: this.userID,
-        },
+          user_id: this.userID.toString(),
+        }
+      // }),
+      //
+      // axios.get(`http://localhost:4000/api/workingtimes/${this.userID}`,{
+      //   workingtime:{
+      //     start: ,
+      //     end: ,
+      //     user_id:
+      //
+      //   },
       })
       console.log(this.userID)
       this.flag = !this.flag
