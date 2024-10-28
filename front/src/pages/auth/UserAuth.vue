@@ -30,7 +30,6 @@ import axios from 'axios'
 import 'css-doodle'
 import { mapActions } from 'pinia'
 import { useGlobalStore } from '@/store/store.js'
-const store = useGlobalStore()
 
 export default {
   name: 'auth',
@@ -44,7 +43,7 @@ export default {
   },
   mounted() {
     axios
-      .get(`http://${store.apiHost}:4000/api/users`)
+      .get(`http://localhost:4000/api/users`)
       .then(response => (this.users = response.data.data))
       .catch(error => {
         console.log(error)

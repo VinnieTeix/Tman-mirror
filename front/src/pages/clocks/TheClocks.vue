@@ -22,7 +22,6 @@ import { mapWritableState } from 'pinia'
 import TheNavigation from '@/components/nav/TheNavigation.vue'
 import Button from '@/components/ui/Button.vue'
 import axios from 'axios'
-const store = useGlobalStore()
 
 export default {
   components: {
@@ -62,7 +61,7 @@ export default {
   },
   methods: {
     clockIn() {
-      axios.post(`http://${store.apiHost}:4000/api/clocks/${this.userID}`, {
+      axios.post(`http://localhost:4000/api/clocks/${this.userID}`, {
         clock: {
           status: true,
           time: new Date(),
@@ -73,7 +72,7 @@ export default {
       this.flag = !this.flag
     },
     clockOut() {
-      axios.post(`http://${store.apiHost}:4000/api/clocks/${this.userID}`, {
+      axios.post(`http://localhost:4000/api/clocks/${this.userID}`, {
         clock: {
           status: false,
           time: new Date(),
