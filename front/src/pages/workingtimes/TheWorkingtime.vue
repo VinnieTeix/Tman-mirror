@@ -1,7 +1,8 @@
 <script>
 import { useGlobalStore } from '@/store/store.js'
-import {mapActions, mapWritableState} from 'pinia'
+import { mapActions, mapWritableState } from 'pinia'
 import FullCalendar from '@fullcalendar/vue3'
+import timeGridPlugin from '@fullcalendar/timegrid'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import TheNavigation from '@/components/nav/TheNavigation.vue'
@@ -24,43 +25,60 @@ export default {
     if (!this.granted) {
       this.$router.push('/clocks')
     }
-    store.fetchUsers() // Fetch users when the component is created
+    store.fetchUsers()
       .then(() => {
-        this.fetchAndSetEvents(); // Fetch events after users are fetched
+        this.fetchAndSetEvents();
       });
   },
-  data: function () {
+  data() {
     return {
-      calendarEvents: [], // Array to hold FullCalendar events
+      calendarEvents: [],
       calendarOptions: {
-        plugins: [dayGridPlugin, interactionPlugin],
-        initialView: 'dayGridWeek',
+        plugins: [timeGridPlugin, dayGridPlugin, interactionPlugin],
+        initialView: 'timeGridWeek',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'toggleView dayGridWeek,timeGridDay', // Custom toggle button
+        },
+        customButtons: {
+          toggleView: {
+            text: 'Toggle View',
+            click: this.toggleCalendarView, // Calls toggle method
+          }
+        },
         events: this.calendarEvents,
+        eventClassNames: 'shift-line',
+        eventDisplay: 'background',
       },
       currentEvents: [],
     }
   },
 
   methods: {
-      ...mapActions(useGlobalStore, { workingtimes: 'getWorkingtimes' }),
+    ...mapActions(useGlobalStore, { workingtimes: 'getWorkingtimes' }),
 
-    handleWeekendsToggle() {
-      this.calendarOptions.weekends = !this.calendarOptions.weekends // update a property
-    },
     async fetchAndSetEvents() {
-      const store = useGlobalStore(); // Get the store instance
+      const store = useGlobalStore();
       const workingTimes = await store.getWorkingtimes();
 
       this.calendarEvents = workingTimes.map(entry => ({
-        title: `${store.users[entry.user_id]}'s shift`, // Set title based on user ID
-        start: new Date(entry.start).toISOString(),
-        end: new Date(entry.end).toISOString(),
+        title: `${store.users[entry.userID]}'s shift`,
+        start: entry.start,
+        end: entry.end,
       }));
+
       this.calendarOptions = { ...this.calendarOptions, events: this.calendarEvents };
+    },
+    toggleCalendarView() {
+      const calendarApi = this.$refs.calendar.getApi();
+      const newView = calendarApi.view.type === 'dayGridWeek' ? 'timeGridDay' : 'dayGridWeek';
+      calendarApi.changeView(newView); // Change view using the API
     },
   },
 }
 </script>
+
 
 <template>
   <the-navigation />
@@ -77,24 +95,23 @@ export default {
 </template>
 
 <style lang="css">
-h2 {
-  margin: 0;
-  font-size: 16px;
+.fc-event {
+  background-color: rgba(0, 123, 255, 0.7); /* Transparent blue background */
+  border: none;
 }
 
-ul {
-  margin: 0;
-  padding: 0 0 0 1.5em;
+.fc .fc-timegrid-slot-label-cushion {
+  color: #000;
+  font-weight: bold;
 }
 
-li {
-  margin: 1.5em 0;
-  padding: 0;
+.fc-timegrid-event {
+  border-left: 3px solid #007bff; /* Line-like trace for events */
+  border-radius: 3px;
 }
 
-b {
-  /* used for event dates/times */
-  margin-right: 3px;
+.fc-timegrid-event .fc-event-title {
+  font-weight: bold;
 }
 
 .demo-app {
@@ -130,8 +147,8 @@ b {
 }
 
 .fc {
-  /* the calendar root */
   max-width: 1100px;
   margin: 0 auto;
 }
 </style>
+
