@@ -42,8 +42,10 @@ export default {
     }
   },
   mounted() {
+    const store = useGlobalStore()
+    console.log(store.apiHost)
     axios
-      .get(`http://localhost:4000/api/users`)
+      .get(`http://${store.apiHost}:4000/api/users`)
       .then(response => (this.users = response.data.data))
       .catch(error => {
         console.log(error)

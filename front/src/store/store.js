@@ -10,7 +10,7 @@ export const useGlobalStore = defineStore('global', {
     userLoggedIn: JSON.parse(localStorage.getItem('userLoggedIn')) || false,
     role: '',
     users: [],
-    apiHost: import.meta.env.VITE_PHX_HOST
+    apiHost: 'phoenix'
 
   }),
   actions: {

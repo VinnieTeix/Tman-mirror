@@ -61,7 +61,8 @@ export default {
   },
   methods: {
     clockIn() {
-      axios.post(`http://localhost:4000/api/clocks/${this.userID}`, {
+      const store = useGlobalStore()
+      axios.post(`http://${store.apiHost}:4000/api/clocks/${this.userID}`, {
         clock: {
           status: true,
           time: new Date(),
@@ -72,7 +73,8 @@ export default {
       this.flag = !this.flag
     },
     clockOut() {
-      axios.post(`http://localhost:4000/api/clocks/${this.userID}`, {
+      const store = useGlobalStore()
+      axios.post(`http://${store.apiHost}:4000/api/clocks/${this.userID}`, {
         clock: {
           status: false,
           time: new Date(),
